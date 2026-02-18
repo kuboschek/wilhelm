@@ -45,55 +45,55 @@ import (
 	"helm.sh/helm/v4/pkg/storage/driver"
 )
 
-var globalUsage = `The Kubernetes package manager
+var globalUsage = `Der Kubernetes Paketverwalter
 
-Common actions for Helm:
+Gemeene Aktionen für Helm:
 
-- helm search:    search for charts
-- helm pull:      download a chart to your local directory to view
-- helm install:   upload the chart to Kubernetes
-- helm list:      list releases of charts
+- helm search:    suche nach Charts
+- helm pull:      lade een Chart herunter zur lokalen Ansicht
+- helm install:   lade een Chart hoch nach Kubernetes
+- helm list:      zeige alle Freigaben von Charts
 
-Environment variables:
+Umjebungsvariablen:
 
-| Name                               | Description                                                                                                |
+| Name                               | Beschreibung                                                                                                 |
 |------------------------------------|------------------------------------------------------------------------------------------------------------|
-| $HELM_CACHE_HOME                   | set an alternative location for storing cached files.                                                      |
-| $HELM_CONFIG_HOME                  | set an alternative location for storing Helm configuration.                                                |
-| $HELM_DATA_HOME                    | set an alternative location for storing Helm data.                                                         |
-| $HELM_DEBUG                        | indicate whether or not Helm is running in Debug mode                                                      |
-| $HELM_DRIVER                       | set the backend storage driver. Values are: configmap, secret, memory, sql.                                |
-| $HELM_DRIVER_SQL_CONNECTION_STRING | set the connection string the SQL storage driver should use.                                               |
-| $HELM_MAX_HISTORY                  | set the maximum number of helm release history.                                                            |
-| $HELM_NAMESPACE                    | set the namespace used for the helm operations.                                                            |
-| $HELM_NO_PLUGINS                   | disable plugins. Set HELM_NO_PLUGINS=1 to disable plugins.                                                 |
-| $HELM_PLUGINS                      | set the path to the plugins directory                                                                      |
-| $HELM_REGISTRY_CONFIG              | set the path to the registry config file.                                                                  |
-| $HELM_REPOSITORY_CACHE             | set the path to the repository cache directory                                                             |
-| $HELM_REPOSITORY_CONFIG            | set the path to the repositories file.                                                                     |
-| $KUBECONFIG                        | set an alternative Kubernetes configuration file (default "~/.kube/config")                                |
-| $HELM_KUBEAPISERVER                | set the Kubernetes API Server Endpoint for authentication                                                  |
-| $HELM_KUBECAFILE                   | set the Kubernetes certificate authority file.                                                             |
-| $HELM_KUBEASGROUPS                 | set the Groups to use for impersonation using a comma-separated list.                                      |
-| $HELM_KUBEASUSER                   | set the Username to impersonate for the operation.                                                         |
-| $HELM_KUBECONTEXT                  | set the name of the kubeconfig context.                                                                    |
-| $HELM_KUBETOKEN                    | set the Bearer KubeToken used for authentication.                                                          |
-| $HELM_KUBEINSECURE_SKIP_TLS_VERIFY | indicate if the Kubernetes API server's certificate validation should be skipped (insecure)                |
-| $HELM_KUBETLS_SERVER_NAME          | set the server name used to validate the Kubernetes API server certificate                                 |
-| $HELM_BURST_LIMIT                  | set the default burst limit in the case the server contains many CRDs (default 100, -1 to disable)         |
-| $HELM_QPS                          | set the Queries Per Second in cases where a high number of calls exceed the option for higher burst values |
-| $HELM_COLOR                        | set color output mode. Allowed values: never, always, auto (default: never)                                |
-| $NO_COLOR                          | set to any non-empty value to disable all colored output (overrides $HELM_COLOR)                           |
+| $HELM_CACHE_HOME                   | setze eenen alternativen Ort für zwischenjespeicherte Dateien.                                              |
+| $HELM_CONFIG_HOME                  | setze eenen alternativen Ort für Helm-Konfiguration.                                                        |
+| $HELM_DATA_HOME                    | setze eenen alternativen Ort für Helm-Daten.                                                                |
+| $HELM_DEBUG                        | zeige an, ob Helm im Debug-Modus läuft                                                                      |
+| $HELM_DRIVER                       | setze den Speichertreiber. Werte sind: configmap, secret, memory, sql.                                      |
+| $HELM_DRIVER_SQL_CONNECTION_STRING | setze die Verbindungszeichenkette für den SQL-Speichertreiber.                                              |
+| $HELM_MAX_HISTORY                  | setze die maximale Anzahl von Helm-Freigabe-Historie.                                                       |
+| $HELM_NAMESPACE                    | setze den Namensraum für die Helm-Operationen.                                                              |
+| $HELM_NO_PLUGINS                   | deaktiviere Plugins. Setze HELM_NO_PLUGINS=1 zum Deaktivieren von Plugins.                                  |
+| $HELM_PLUGINS                      | setze den Pfad zum Plugins-Verzeichnis                                                                      |
+| $HELM_REGISTRY_CONFIG              | setze den Pfad zur Registry-Konfigurationsdatei.                                                            |
+| $HELM_REPOSITORY_CACHE             | setze den Pfad zum Repository-Zwischenspeicher-Verzeichnis                                                  |
+| $HELM_REPOSITORY_CONFIG            | setze den Pfad zur Repositories-Datei.                                                                      |
+| $KUBECONFIG                        | setze eene alternative Kubernetes-Konfigurationsdatei (Standard "~/.kube/config")                           |
+| $HELM_KUBEAPISERVER                | setze den Kubernetes API Server Endpunkt für Authentifizierung                                              |
+| $HELM_KUBECAFILE                   | setze die Kubernetes-Zertifizierungsstellen-Datei.                                                          |
+| $HELM_KUBEASGROUPS                 | setze die Jruppen für Identitätswechsel mit eener komma-separierten Liste.                                  |
+| $HELM_KUBEASUSER                   | setze den Benutzernamen für den Identitätswechsel der Operation.                                            |
+| $HELM_KUBECONTEXT                  | setze den Namen des kubeconfig-Kontexts.                                                                    |
+| $HELM_KUBETOKEN                    | setze das Bearer KubeToken für Authentifizierung.                                                           |
+| $HELM_KUBEINSECURE_SKIP_TLS_VERIFY | zeige an, ob die Kubernetes API Server Zertifikatsvalidierung übersprungen werden soll (unsicher)           |
+| $HELM_KUBETLS_SERVER_NAME          | setze den Servernamen zur Validierung des Kubernetes API Server Zertifikats                                 |
+| $HELM_BURST_LIMIT                  | setze das Standard-Burst-Limit für den Fall, dass der Server viele CRDs enthält (Standard 100, -1 zum Deaktivieren) |
+| $HELM_QPS                          | setze die Anfragen Pro Sekunde in Fällen, wo eene hohe Anzahl von Aufrufen die Option für höhere Burst-Werte überschreitet |
+| $HELM_COLOR                        | setze den Farbausgabe-Modus. Erlaubte Werte: never, always, auto (Standard: never)                          |
+| $NO_COLOR                          | setze auf eenen nicht-leeren Wert zum Deaktivieren aller farbijen Ausgabe (überschreibt $HELM_COLOR)        |
 
-Helm stores cache, configuration, and data based on the following configuration order:
+Helm speichert Zwischenspeicher, Konfiguration und Daten basierend auf der folgenden Konfigurationsreihenfolge:
 
-- If a HELM_*_HOME environment variable is set, it will be used
-- Otherwise, on systems supporting the XDG base directory specification, the XDG variables will be used
-- When no other location is set a default location will be used based on the operating system
+- Wenn eene HELM_*_HOME Umjebungsvariable jesetzt ist, wird sie verwendet
+- Ansonsten werden auf Systemen, die die XDG-Basisverzeichnisspezifikation unterstützen, die XDG-Variablen verwendet
+- Wenn kein anderer Ort jesetzt ist, wird een Standardort basierend auf dem Betriebssystem verwendet
 
-By default, the default directories depend on the Operating System. The defaults are listed below:
+Standardmäßich hänjen die Standardverzeichnisse vom Betriebssystem ab. Die Standards sind unten aufjeführt:
 
-| Operating System | Cache Path                | Configuration Path             | Data Path               |
+| Betriebssystem | Zwischenspeicher-Pfad     | Konfigurationspfad             | Datenpfad               |
 |------------------|---------------------------|--------------------------------|-------------------------|
 | Linux            | $HOME/.cache/helm         | $HOME/.config/helm             | $HOME/.local/share/helm |
 | macOS            | $HOME/Library/Caches/helm | $HOME/Library/Preferences/helm | $HOME/Library/helm      |
@@ -150,7 +150,7 @@ func configureColorOutput(settings *cli.EnvSettings) {
 func newRootCmdWithConfig(actionConfig *action.Configuration, out io.Writer, args []string, logSetup func(bool)) (*cobra.Command, error) {
 	cmd := &cobra.Command{
 		Use:          "helm",
-		Short:        "The Helm package manager for Kubernetes.",
+		Short:        "Der Helm Paketverwalter für Kubernetes.",
 		Long:         globalUsage,
 		SilenceUsage: true,
 		PersistentPreRun: func(_ *cobra.Command, _ []string) {
@@ -194,7 +194,7 @@ func newRootCmdWithConfig(actionConfig *action.Configuration, out io.Writer, arg
 	case "never", "auto", "always":
 		// Valid color mode
 	default:
-		return nil, fmt.Errorf("invalid color mode %q: must be one of: never, auto, always", settings.ColorMode)
+		return nil, fmt.Errorf("unjülticher Farbmodus %q: muss eener von diesen sein: never, auto, always", settings.ColorMode)
 	}
 
 	// Configure color output based on ColorMode setting
@@ -390,7 +390,7 @@ func checkForExpiredRepos(repofile string) {
 		if url := r.URL; strings.Contains(url, exp.old) {
 			fmt.Fprintf(
 				os.Stderr,
-				"WARNING: %q is deprecated for %q and will be deleted Nov. 13, 2020.\nWARNING: You should switch to %q via:\nWARNING: helm repo add %q %q --force-update\n",
+				"WARNUNG: %q ist veraltet für %q und wird am 13. November 2020 jelöscht.\nWARNUNG: Sie sollten zu %q wechseln via:\nWARNUNG: helm repo add %q %q --force-update\n",
 				exp.old,
 				exp.name,
 				exp.new,
@@ -449,7 +449,7 @@ func newRegistryClientWithTLS(
 	)
 
 	if err != nil {
-		return nil, fmt.Errorf("can't create TLS config for client: %w", err)
+		return nil, fmt.Errorf("kann TLS-Konfiguration für Client nicht erstellen: %w", err)
 	}
 
 	// Create a new registry client
@@ -488,7 +488,7 @@ func releaserToV1Release(rel ri.Releaser) (*release.Release, error) {
 	case nil:
 		return nil, nil
 	default:
-		return nil, fmt.Errorf("unsupported release type: %T", rel)
+		return nil, fmt.Errorf("nicht unterstützter Freigabe-Typ: %T", rel)
 	}
 }
 

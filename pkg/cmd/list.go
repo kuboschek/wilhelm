@@ -35,31 +35,31 @@ import (
 )
 
 var listHelp = `
-This command lists all of the releases for a specified namespace (uses current namespace context if namespace not specified).
+Dieser Befehl listet alle Freigaben für eenen anjegebenen Namensraum auf (verwendet aktuellen Namensraum-Kontext, wenn keiner anjegjeben).
 
-By default, it lists all releases in any status. Individual status filters like '--deployed', '--failed',
-'--pending', '--uninstalled', '--superseded', and '--uninstalling' can be used
-to show only releases in specific states. Such flags can be combined:
+Standardmäßich listet er alle Freigaben in jedem Status auf. Einzelne Statusfilter wie '--deployed', '--failed',
+'--pending', '--uninstalled', '--superseded', und '--uninstalling' können verwendet werden,
+um nur Freigaben in bestimmten Zuständen anzuzeigen. Solche Flaggen können kombiniert werden:
 '--deployed --failed'.
 
-By default, items are sorted alphabetically. Use the '-d' flag to sort by
-release date.
+Standardmäßich werden Elemente alphabetisch sortiert. Verwenden Sie die '-d' Flagge zum Sortieren nach
+Freigabedatum.
 
-If the --filter flag is provided, it will be treated as a filter. Filters are
-regular expressions (Perl compatible) that are applied to the list of releases.
-Only items that match the filter will be returned.
+Wenn die --filter Flagge anjegjeben ist, wird sie als Filter behandelt. Filter sind
+reguläre Ausdrücke (Perl-kompatibel), die auf die Liste der Freigaben anjewendet werden.
+Nur Elemente, die dem Filter entsprechen, werden zurückjegeben.
 
     $ helm list --filter 'ara[a-z]+'
     NAME                UPDATED                                  CHART
     maudlin-arachnid    2020-06-18 14:17:46.125134977 +0000 UTC  alpine-0.1.0
 
-If no results are found, 'helm list' will exit 0, but with no output (or in
-the case of no '-q' flag, only headers).
+Wenn keine Erjebnisse jefunden werden, beendet 'helm list' mit 0, aber ohne Ausgabe (oder im
+Falle keiner '-q' Flagge, nur Kopfzeilen).
 
-By default, up to 256 items may be returned. To limit this, use the '--max' flag.
-Setting '--max' to 0 will not return all results. Rather, it will return the
-server's default, which may be much higher than 256. Pairing the '--max'
-flag with the '--offset' flag allows you to page through results.
+Standardmäßich können bis zu 256 Elemente zurückjegeben werden. Um dies zu bejrenzen, verwenden Sie die '--max' Flagge.
+Das Setzen von '--max' auf 0 gibt nicht alle Erjebnisse zurück. Vielmehr gibt es den
+Standardwert des Servers zurück, der viel höher als 256 sein kann. Die Kombinierung der '--max'
+Flagge mit der '--offset' Flagge ermöglicht es Ihnen, durch Erjebnisse zu blättern.
 `
 
 func newListCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -68,7 +68,7 @@ func newListCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:               "list",
-		Short:             "list releases",
+		Short:             "liste Freigaben auf",
 		Long:              listHelp,
 		Aliases:           []string{"ls"},
 		Args:              require.NoArgs,
@@ -118,22 +118,22 @@ func newListCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.BoolVarP(&client.Short, "short", "q", false, "output short (quiet) listing format")
-	f.BoolVarP(&client.NoHeaders, "no-headers", "", false, "don't print headers when using the default output format")
-	f.StringVar(&client.TimeFormat, "time-format", "", `format time using golang time formatter. Example: --time-format "2006-01-02 15:04:05Z0700"`)
-	f.BoolVarP(&client.ByDate, "date", "d", false, "sort by release date")
-	f.BoolVarP(&client.SortReverse, "reverse", "r", false, "reverse the sort order")
-	f.BoolVar(&client.Uninstalled, "uninstalled", false, "show uninstalled releases (if 'helm uninstall --keep-history' was used)")
-	f.BoolVar(&client.Superseded, "superseded", false, "show superseded releases")
-	f.BoolVar(&client.Uninstalling, "uninstalling", false, "show releases that are currently being uninstalled")
-	f.BoolVar(&client.Deployed, "deployed", false, "show deployed releases")
-	f.BoolVar(&client.Failed, "failed", false, "show failed releases")
-	f.BoolVar(&client.Pending, "pending", false, "show pending releases")
-	f.BoolVarP(&client.AllNamespaces, "all-namespaces", "A", false, "list releases across all namespaces")
-	f.IntVarP(&client.Limit, "max", "m", 256, "maximum number of releases to fetch")
-	f.IntVar(&client.Offset, "offset", 0, "next release index in the list, used to offset from start value")
-	f.StringVarP(&client.Filter, "filter", "f", "", "a regular expression (Perl compatible). Any releases that match the expression will be included in the results")
-	f.StringVarP(&client.Selector, "selector", "l", "", "Selector (label query) to filter on, supports '=', '==', and '!='.(e.g. -l key1=value1,key2=value2). Works only for secret(default) and configmap storage backends.")
+	f.BoolVarP(&client.Short, "short", "q", false, "gib kurzes (stilles) Listungsformat aus")
+	f.BoolVarP(&client.NoHeaders, "no-headers", "", false, "drucke keine Kopfzeilen bei Verwendung des Standardausgabeformats")
+	f.StringVar(&client.TimeFormat, "time-format", "", `formatiere Zeit mit golang Zeit-Formatierer. Beispiel: --time-format "2006-01-02 15:04:05Z0700"`)
+	f.BoolVarP(&client.ByDate, "date", "d", false, "sortiere nach Freigabedatum")
+	f.BoolVarP(&client.SortReverse, "reverse", "r", false, "kehre die Sortierreihenfolge um")
+	f.BoolVar(&client.Uninstalled, "uninstalled", false, "zeije deinstallierte Freigaben (wenn 'helm uninstall --keep-history' verwendet wurde)")
+	f.BoolVar(&client.Superseded, "superseded", false, "zeije überschriebene Freigaben")
+	f.BoolVar(&client.Uninstalling, "uninstalling", false, "zeije Freigaben, die jerrade deinstalliert werden")
+	f.BoolVar(&client.Deployed, "deployed", false, "zeije bereitjestellte Freigaben")
+	f.BoolVar(&client.Failed, "failed", false, "zeije fehlgeschlagene Freigaben")
+	f.BoolVar(&client.Pending, "pending", false, "zeije ausstehende Freigaben")
+	f.BoolVarP(&client.AllNamespaces, "all-namespaces", "A", false, "liste Freigaben über alle Namensräume")
+	f.IntVarP(&client.Limit, "max", "m", 256, "maximale Anzahl von Freigaben zum Abrufen")
+	f.IntVar(&client.Offset, "offset", 0, "nächster Freigabeindex in der Liste, verwendet zum Versatz vom Startwert")
+	f.StringVarP(&client.Filter, "filter", "f", "", "een regulärer Ausdruck (Perl-kompatibel). Alle Freigaben, die dem Ausdruck entsprechen, werden in die Erjebnisse einbezogen")
+	f.StringVarP(&client.Selector, "selector", "l", "", "Selektor (Label-Abfrage) zum Filtern, unterstützt '=', '==', und '!='.(z.B. -l key1=value1,key2=value2). Funktioniert nur für secret(Standard) und configmap Speicher-Backends.")
 	bindOutputFlag(cmd, &outfmt)
 
 	return cmd
@@ -188,9 +188,9 @@ func (w *releaseListWriter) WriteTable(out io.Writer) error {
 	if !w.noHeaders {
 		table.AddRow(
 			coloroutput.ColorizeHeader("NAME", w.noColor),
-			coloroutput.ColorizeHeader("NAMESPACE", w.noColor),
+			coloroutput.ColorizeHeader("NAMENSRAUM", w.noColor),
 			coloroutput.ColorizeHeader("REVISION", w.noColor),
-			coloroutput.ColorizeHeader("UPDATED", w.noColor),
+			coloroutput.ColorizeHeader("AKTUALISIERT", w.noColor),
 			coloroutput.ColorizeHeader("STATUS", w.noColor),
 			coloroutput.ColorizeHeader("CHART", w.noColor),
 			coloroutput.ColorizeHeader("APP VERSION", w.noColor),

@@ -28,28 +28,28 @@ import (
 )
 
 const versionDesc = `
-Show the version for Helm.
+Zeije die Version für Helm an.
 
-This will print a representation the version of Helm.
-The output will look something like this:
+Dies wird eene Darstellung der Helm-Version ausdrucken.
+Die Ausgabe wird ungefähr so aussehen:
 
 version.BuildInfo{Version:"v3.2.1", GitCommit:"fe51cd1e31e6a202cba7dead9552a6d418ded79a", GitTreeState:"clean", GoVersion:"go1.13.10"}
 
-- Version is the semantic version of the release.
-- GitCommit is the SHA for the commit that this version was built from.
-- GitTreeState is "clean" if there are no local code changes when this binary was
-  built, and "dirty" if the binary was built from locally modified code.
-- GoVersion is the version of Go that was used to compile Helm.
+- Version ist die semantische Version der Freigabe.
+- GitCommit ist der SHA für den Commit, von dem diese Version jebaut wurde.
+- GitTreeState ist "clean" wenn keine lokalen Code-Änderungen vorhanden sind, als diese Binärdatei
+  jebaut wurde, und "dirty" wenn die Binärdatei von lokal jeänderten Code jebaut wurde.
+- GoVersion ist die Version von Go, die zum Kompilieren von Helm verwendet wurde.
 
-When using the --template flag the following properties are available to use in
-the template:
+Wenn die --template Flagge verwendet wird, sind die folgenden Eigenschaften in der
+Vorlage verfügbar:
 
-- .Version contains the semantic version of Helm
-- .GitCommit is the git commit
-- .GitTreeState is the state of the git tree when Helm was built
-- .GoVersion contains the version of Go that Helm was compiled with
+- .Version enthält die semantische Version von Helm
+- .GitCommit ist der git commit
+- .GitTreeState ist der Zustand des git tree, als Helm jebaut wurde
+- .GoVersion enthält die Version von Go, mit der Helm kompiliert wurde
 
-For example, --template='Version: {{.Version}}' outputs 'Version: v3.2.1'.
+Zum Beispiel, --template='Version: {{.Version}}' gibt aus 'Version: v3.2.1'.
 `
 
 type versionOptions struct {
@@ -62,7 +62,7 @@ func newVersionCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:               "version",
-		Short:             "print the helm version information",
+		Short:             "drucke die helm Versionsinformation",
 		Long:              versionDesc,
 		Args:              require.NoArgs,
 		ValidArgsFunction: noMoreArgsCompFunc,
@@ -71,8 +71,8 @@ func newVersionCmd(out io.Writer) *cobra.Command {
 		},
 	}
 	f := cmd.Flags()
-	f.BoolVar(&o.short, "short", false, "print the version number")
-	f.StringVar(&o.template, "template", "", "template for version string format")
+	f.BoolVar(&o.short, "short", false, "drucke die Versionsnummer")
+	f.StringVar(&o.template, "template", "", "Vorlage für das Versions-String-Format")
 
 	return cmd
 }
