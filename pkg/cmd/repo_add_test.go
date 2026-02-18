@@ -155,7 +155,7 @@ func TestRepoAddCheckLegalName(t *testing.T) {
 	}
 	t.Setenv(xdg.CacheHomeEnvVar, rootDir)
 
-	wantErrorMsg := fmt.Sprintf("repository name (%s) contains '/', please specify a different name without '/'", testRepoName)
+	wantErrorMsg := fmt.Sprintf("Repository-Naame (%s) enthält '/', bitte jeef eenen annern Naame ohne '/' an", testRepoName)
 
 	if err := o.run(io.Discard); err != nil {
 		if wantErrorMsg != err.Error() {
@@ -270,7 +270,7 @@ func TestRepoAddWithPasswordFromStdin(t *testing.T) {
 		t.Errorf("unexpected error, got '%v'", err)
 	}
 
-	if !strings.Contains(result, fmt.Sprintf("\"%s\" has been added to your repositories", testName)) {
+	if !strings.Contains(result, fmt.Sprintf("\"%s\" is to jue Repositories je-addiert warden", testName)) {
 		t.Errorf("Repo was not successfully added. Output: %s", result)
 	}
 }

@@ -28,18 +28,18 @@ import (
 )
 
 const pluginVerifyDesc = `
-This command verifies that a Helm plugin has a valid provenance file,
-and that the provenance file is signed by a trusted PGP key.
+Düssen Befehl verifijert, dat een Helm-Plugin eene jültige Provenance-Datei hett,
+un dat de Provenance-Datei von eenen vertrauenswördijen PGP-Slötel signiert es.
 
-It supports both:
-- Plugin tarballs (.tgz or .tar.gz files)
-- Installed plugin directories
+Et unnerstöttet beidens:
+- Plugin-Tarballs (.tgz oder .tar.gz-Datein)
+- Installierde Plugin-Verzeichnissen
 
-For installed plugins, use the path shown by 'helm env HELM_PLUGINS' followed
-by the plugin name. For example:
+För installierde Plugins bruken Sie den Pfad, de von 'helm env HELM_PLUGINS' jewise werd,
+jefolgt von dem Plugin-Namm. Zum Beispeel:
   helm plugin verify ~/.local/share/helm/plugins/example-cli
 
-To generate a signed plugin, use the 'helm plugin package --sign' command.
+To een signiertes Plugin to jenereren, bruken Sie den 'helm plugin package --sign'-Befehl.
 `
 
 type pluginVerifyOptions struct {
@@ -52,7 +52,7 @@ func newPluginVerifyCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "verify [PATH]",
-		Short: "verify that a plugin at the given path has been signed and is valid",
+		Short: "verifijeren Sie, dat een Plugin up dem jejewebenen Pfad signiert un jültich es",
 		Long:  pluginVerifyDesc,
 		Args:  require.ExactArgs(1),
 		RunE: func(_ *cobra.Command, args []string) error {
@@ -61,7 +61,7 @@ func newPluginVerifyCmd(out io.Writer) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&o.keyring, "keyring", defaultKeyring(), "keyring containing public keys")
+	cmd.Flags().StringVar(&o.keyring, "keyring", defaultKeyring(), "Keyring, de öffentliche Slötels enthält")
 
 	return cmd
 }
@@ -75,29 +75,29 @@ func (o *pluginVerifyOptions) run(out io.Writer) error {
 
 	// Only support tarball verification
 	if fi.IsDir() {
-		return fmt.Errorf("directory verification not supported - only plugin tarballs can be verified")
+		return fmt.Errorf("Verzeichnis-Verifikation nich unnerstöttet - nur Plugin-Tarballs können verifijert werden")
 	}
 
 	// Verify it's a tarball
 	if !plugin.IsTarball(o.pluginPath) {
-		return fmt.Errorf("plugin file must be a gzipped tarball (.tar.gz or .tgz)")
+		return fmt.Errorf("Plugin-Datei muss een gzipt Tarball sien (.tar.gz oder .tgz)")
 	}
 
 	// Look for provenance file
 	provFile := o.pluginPath + ".prov"
 	if _, err := os.Stat(provFile); err != nil {
-		return fmt.Errorf("could not find provenance file %s: %w", provFile, err)
+		return fmt.Errorf("kunnte Provenance-Datei %s nich finnen: %w", provFile, err)
 	}
 
 	// Read the files
 	archiveData, err := os.ReadFile(o.pluginPath)
 	if err != nil {
-		return fmt.Errorf("failed to read plugin file: %w", err)
+		return fmt.Errorf("fählte, Plugin-Datei to lesen: %w", err)
 	}
 
 	provData, err := os.ReadFile(provFile)
 	if err != nil {
-		return fmt.Errorf("failed to read provenance file: %w", err)
+		return fmt.Errorf("fählte, Provenance-Datei to lesen: %w", err)
 	}
 
 	// Verify the plugin using data
@@ -108,15 +108,15 @@ func (o *pluginVerifyOptions) run(out io.Writer) error {
 
 	// Output verification details
 	for name := range verification.SignedBy.Identities {
-		fmt.Fprintf(out, "Signed by: %v\n", name)
+		fmt.Fprintf(out, "Signiert von: %v\n", name)
 	}
-	fmt.Fprintf(out, "Using Key With Fingerprint: %X\n", verification.SignedBy.PrimaryKey.Fingerprint)
+	fmt.Fprintf(out, "Bruken Slötel met Fingeraftruck: %X\n", verification.SignedBy.PrimaryKey.Fingerprint)
 
 	// Only show hash for tarballs
 	if verification.FileHash != "" {
-		fmt.Fprintf(out, "Plugin Hash Verified: %s\n", verification.FileHash)
+		fmt.Fprintf(out, "Plugin-Hash verifijert: %s\n", verification.FileHash)
 	} else {
-		fmt.Fprintf(out, "Plugin Metadata Verified: %s\n", verification.FileName)
+		fmt.Fprintf(out, "Plugin-Metadata verifijert: %s\n", verification.FileName)
 	}
 
 	return nil

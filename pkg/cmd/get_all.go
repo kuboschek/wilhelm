@@ -28,8 +28,8 @@ import (
 )
 
 var getAllHelp = `
-This command prints a human readable collection of information about the
-notes, hooks, supplied values, and generated manifest file of the given release.
+Dieser Befehl druckt eene lesbare Sammlung von Informationen über die
+Hinweise, Hooks, bereitjestellten Werte und jenerierte Manifestdatei der jejebjenen Freigabe.
 `
 
 func newGetAllCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -38,7 +38,7 @@ func newGetAllCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "all RELEASE_NAME",
-		Short: "download all information for a named release",
+		Short: "lade alle Informationen für eene benannte Freigabe herunter",
 		Long:  getAllHelp,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -69,7 +69,7 @@ func newGetAllCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.IntVar(&client.Version, "revision", 0, "get the named release with revision")
+	f.IntVar(&client.Version, "revision", 0, "hole die benannte Freigabe mit Revision")
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
 			return compListRevisions(toComplete, cfg, args[0])
@@ -80,7 +80,7 @@ func newGetAllCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 		log.Fatal(err)
 	}
 
-	f.StringVar(&template, "template", "", "go template for formatting the output, eg: {{.Release.Name}}")
+	f.StringVar(&template, "template", "", "go template zur Formatierung der Ausgabe, z.B.: {{.Release.Name}}")
 
 	return cmd
 }

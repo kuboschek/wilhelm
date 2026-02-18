@@ -29,9 +29,9 @@ import (
 )
 
 const getHooksHelp = `
-This command downloads hooks for a given release.
+Dieser Befehl lädt Hooks für eene jejebjene Freigabe herunter.
 
-Hooks are formatted in YAML and separated by the YAML '---\n' separator.
+Hooks sind in YAML formatiert und durch den YAML '---\n' Trenner jetrennt.
 `
 
 func newGetHooksCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -39,7 +39,7 @@ func newGetHooksCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "hooks RELEASE_NAME",
-		Short: "download all hooks for a named release",
+		Short: "lade alle Hooks für eene benannte Freigabe herunter",
 		Long:  getHooksHelp,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -68,7 +68,7 @@ func newGetHooksCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().IntVar(&client.Version, "revision", 0, "get the named release with revision")
+	cmd.Flags().IntVar(&client.Version, "revision", 0, "hole die benannte Freigabe mit Revision")
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
 			return compListRevisions(toComplete, cfg, args[0])

@@ -32,15 +32,15 @@ import (
 )
 
 const updateDesc = `
-Update gets the latest information about charts from the respective chart repositories.
-Information is cached locally, where it is used by commands like 'helm search'.
+Update holt de nieuwesten Informatschonen övver Charts vun de jeweiligen Chart-Repositories.
+Informatschonen warden lokal je-cachd, wo se vun Kommandos wie 'helm search' je-bruukt warden.
 
-You can optionally specify a list of repositories you want to update.
+Jie könnt optional eene Liste vun Repositories angeben, de jie updaten wöllt.
 	$ helm repo update <repo_name> ...
-To update all the repositories, use 'helm repo update'.
+Öm alle Repositories to updaten, bruukt 'helm repo update'.
 `
 
-var errNoRepositories = errors.New("no repositories found. You must add one before updating")
+var errNoRepositories = errors.New("keene Repositories je-funnen. Jie müsst een addieren, bevör jie updaten könnt")
 
 type repoUpdateOptions struct {
 	update    func([]*repo.ChartRepository, io.Writer) error
@@ -56,7 +56,7 @@ func newRepoUpdateCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update [REPO1 [REPO2 ...]]",
 		Aliases: []string{"up"},
-		Short:   "update information of available charts locally from chart repositories",
+		Short:   "Informatschonen övver verfögbare Charts lokal vun Chart-Repositories updaten",
 		Long:    updateDesc,
 		Args:    require.MinimumNArgs(0),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -71,7 +71,7 @@ func newRepoUpdateCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.DurationVar(&o.timeout, "timeout", getter.DefaultHTTPTimeout*time.Second, "time to wait for the index file download to complete")
+	f.DurationVar(&o.timeout, "timeout", getter.DefaultHTTPTimeout*time.Second, "Tiet, de up den Download vun de Indexdatei to wachten is")
 
 	return cmd
 }
@@ -82,7 +82,7 @@ func (o *repoUpdateOptions) run(out io.Writer) error {
 	case isNotExist(err):
 		return errNoRepositories
 	case err != nil:
-		return fmt.Errorf("failed loading file: %s: %w", o.repoFile, err)
+		return fmt.Errorf("Laden vun Datei je-feilt: %s: %w", o.repoFile, err)
 	case len(f.Repositories) == 0:
 		return errNoRepositories
 	}
@@ -114,7 +114,7 @@ func (o *repoUpdateOptions) run(out io.Writer) error {
 }
 
 func updateCharts(repos []*repo.ChartRepository, out io.Writer) error {
-	fmt.Fprintln(out, "Hang tight while we grab the latest from your chart repositories...")
+	fmt.Fprintln(out, "Holt juch fast, wieldes wi dat Nieuweste vun jue Chart-Repositories holen...")
 	var wg sync.WaitGroup
 	failRepoURLChan := make(chan string, len(repos))
 
@@ -126,12 +126,12 @@ func updateCharts(repos []*repo.ChartRepository, out io.Writer) error {
 			if _, err := re.DownloadIndexFile(); err != nil {
 				writeMutex.Lock()
 				defer writeMutex.Unlock()
-				fmt.Fprintf(out, "...Unable to get an update from the %q chart repository (%s):\n\t%s\n", re.Config.Name, re.Config.URL, err)
+				fmt.Fprintf(out, "...Kann keen Update vun dat %q Chart-Repository (%s) kriegen:\n\t%s\n", re.Config.Name, re.Config.URL, err)
 				failRepoURLChan <- re.Config.URL
 			} else {
 				writeMutex.Lock()
 				defer writeMutex.Unlock()
-				fmt.Fprintf(out, "...Successfully got an update from the %q chart repository\n", re.Config.Name)
+				fmt.Fprintf(out, "...Erfolgreich een Update vun dat %q Chart-Repository je-holt\n", re.Config.Name)
 			}
 		}(re)
 	}
@@ -147,11 +147,11 @@ func updateCharts(repos []*repo.ChartRepository, out io.Writer) error {
 	}
 
 	if len(repoFailList) > 0 {
-		return fmt.Errorf("failed to update the following repositories: %s",
+		return fmt.Errorf("Update vun düsse Repositories je-feilt: %s",
 			repoFailList)
 	}
 
-	fmt.Fprintln(out, "Update Complete. ⎈Happy Helming!⎈")
+	fmt.Fprintln(out, "Update je-afsloten. ⎈Happy Helming!⎈")
 	return nil
 }
 
@@ -165,7 +165,7 @@ func checkRequestedRepos(requestedRepos []string, validRepos []*repo.Entry) erro
 			}
 		}
 		if !found {
-			return fmt.Errorf("no repositories found matching '%s'.  Nothing will be updated", requestedRepo)
+			return fmt.Errorf("keene Repositories je-funnen, de to '%s' passen. Nix ward je-updatet", requestedRepo)
 		}
 	}
 	return nil

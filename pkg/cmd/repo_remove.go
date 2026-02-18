@@ -43,7 +43,7 @@ func newRepoRemoveCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "remove [REPO1 [REPO2 ...]]",
 		Aliases: []string{"rm"},
-		Short:   "remove one or more chart repositories",
+		Short:   "een oder mehr Chart-Repositories entfernen",
 		Args:    require.MinimumNArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			return compListRepos(toComplete, args), cobra.ShellCompDirectiveNoFileComp
@@ -61,12 +61,12 @@ func newRepoRemoveCmd(out io.Writer) *cobra.Command {
 func (o *repoRemoveOptions) run(out io.Writer) error {
 	r, err := repo.LoadFile(o.repoFile)
 	if isNotExist(err) || len(r.Repositories) == 0 {
-		return errors.New("no repositories configured")
+		return errors.New("keene Repositories je-konfiguriert")
 	}
 
 	for _, name := range o.names {
 		if !r.Remove(name) {
-			return fmt.Errorf("no repo named %q found", name)
+			return fmt.Errorf("keen Repository met Naame %q je-funnen", name)
 		}
 		if err := r.WriteFile(o.repoFile, 0600); err != nil {
 			return err
@@ -75,7 +75,7 @@ func (o *repoRemoveOptions) run(out io.Writer) error {
 		if err := removeRepoCache(o.repoCache, name); err != nil {
 			return err
 		}
-		fmt.Fprintf(out, "%q has been removed from your repositories\n", name)
+		fmt.Fprintf(out, "%q is vun jue Repositories je-entfernt warden\n", name)
 	}
 
 	return nil
@@ -91,7 +91,7 @@ func removeRepoCache(root, name string) error {
 	if _, err := os.Stat(idx); errors.Is(err, fs.ErrNotExist) {
 		return nil
 	} else if err != nil {
-		return fmt.Errorf("can't remove index file %s: %w", idx, err)
+		return fmt.Errorf("kann Indexdatei %s nich entfernen: %w", idx, err)
 	}
 	return os.Remove(idx)
 }

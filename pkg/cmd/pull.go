@@ -29,18 +29,18 @@ import (
 )
 
 const pullDesc = `
-Retrieve a package from a package repository, and download it locally.
+Roopen Sie een Packäschen von eene Package-Repository und laden Sie et lokal herunner.
 
-This is useful for fetching packages to inspect, modify, or repackage. It can
-also be used to perform cryptographic verification of a chart without installing
-the chart.
+Dütt es nöttlich to Packäschen to holen, to inspekjeren, to änneren oder to repackäschen. Et kann
+ook jebrukt werden, to kryptograafische Verifikation von eene Chart ustoföhren ohn de Chart
+to installäschen.
 
-There are options for unpacking the chart after download. This will create a
-directory for the chart and uncompress into that directory.
+Et jeft Optionen to de Chart na dem Download ustopacken. Dütt werd een
+Verzeichnis för de Chart schöpen und in düsses Verzeichnis entkomprimieren.
 
-If the --verify flag is specified, the requested chart MUST have a provenance
-file, and MUST pass the verification process. Failure in any part of this will
-result in an error, and the chart will not be saved locally.
+Wan dat --verify-Flag anjejewt es, MUSS de anjefraede Chart eene Provenance-
+Datei hebben un MUSS de Verifikationsprozess duurchstahn. Fähler in irjendeenen Deel von dütt werd
+to eenen Fehler föhren, un de Chart werd nich lokal jespeichert.
 `
 
 func newPullCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -48,7 +48,7 @@ func newPullCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:     "pull [chart URL | repo/chartname] [...]",
-		Short:   "download a chart from a repository and (optionally) unpack it in local directory",
+		Short:   "laden Sie eene Chart von eene Repository herunner un (optional) packäschen Sie se in lokales Verzeichnis us",
 		Aliases: []string{"fetch"},
 		Long:    pullDesc,
 		Args:    require.MinimumNArgs(1),
@@ -68,7 +68,7 @@ func newPullCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			registryClient, err := newRegistryClient(client.CertFile, client.KeyFile, client.CaFile,
 				client.InsecureSkipTLSVerify, client.PlainHTTP, client.Username, client.Password)
 			if err != nil {
-				return fmt.Errorf("missing registry client: %w", err)
+				return fmt.Errorf("Registry-Client fehlt: %w", err)
 			}
 			client.SetRegistryClient(registryClient)
 
@@ -84,11 +84,11 @@ func newPullCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.BoolVar(&client.Devel, "devel", false, "use development versions, too. Equivalent to version '>0.0.0-0'. If --version is set, this is ignored.")
-	f.BoolVar(&client.Untar, "untar", false, "if set to true, will untar the chart after downloading it")
-	f.BoolVar(&client.VerifyLater, "prov", false, "fetch the provenance file, but don't perform verification")
-	f.StringVar(&client.UntarDir, "untardir", ".", "if untar is specified, this flag specifies the name of the directory into which the chart is expanded")
-	f.StringVarP(&client.DestDir, "destination", "d", ".", "location to write the chart. If this and untardir are specified, untardir is appended to this")
+	f.BoolVar(&client.Devel, "devel", false, "bruken Sie ook Entwicklungsversjonen. Entspricht Versjon '>0.0.0-0'. Wan --version jesett es, werd dütt ijgnoriert.")
+	f.BoolVar(&client.Untar, "untar", false, "wan up wahr jesett, werd de Chart na dem Download entarrt")
+	f.BoolVar(&client.VerifyLater, "prov", false, "holen Sie de Provenance-Datei, aber föhren Sie keene Verifikation us")
+	f.StringVar(&client.UntarDir, "untardir", ".", "wan untar anjejewt es, spezifijert dütt Flag den Namm von dem Verzeichnis, in dat de Chart usjebredet werd")
+	f.StringVarP(&client.DestDir, "destination", "d", ".", "Ort to de Chart to schrewen. Wan dütt un untardir anjejewt sünd, werd untardir to düssem anhangen")
 	addChartPathOptionsFlags(f, &client.ChartPathOptions)
 
 	err := cmd.RegisterFlagCompletionFunc("version", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {

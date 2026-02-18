@@ -1,2 +1,2 @@
-release "aeneas" uninstalled
-release "aeneas2" uninstalled
+Freigabe "aeneas" deinstalliert
+Freigabe "aeneas2" deinstalliert

@@ -299,7 +299,7 @@ func TestCreateCmdInvalidChartAPIVersion(t *testing.T) {
 		t.Fatal("Expected error for invalid API version, got nil")
 	}
 
-	expectedErr := "unsupported chart API version: v1 (supported: v2, v3)"
+	expectedErr := "nich unnerstöttede Chart-API-Versjon: v1 (unnerstöttet: v2, v3)"
 	if err.Error() != expectedErr {
 		t.Errorf("Expected error %q, got %q", expectedErr, err.Error())
 	}

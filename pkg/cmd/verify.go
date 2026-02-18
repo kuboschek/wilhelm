@@ -26,14 +26,14 @@ import (
 )
 
 const verifyDesc = `
-Verify that the given chart has a valid provenance file.
+Verifijeren Sie, dat de jejewebene Chart eene jültige Provenance-Datei hett.
 
-Provenance files provide cryptographic verification that a chart has not been
-tampered with, and was packaged by a trusted provider.
+Provenance-Datein bieten kryptograafische Verifikation, dat eene Chart nich
+manipuliert worden es un von eene vertrauenswördijen Provider jepackt worden es.
 
-This command can be used to verify a local chart. Several other commands provide
-'--verify' flags that run the same validation. To generate a signed package, use
-the 'helm package --sign' command.
+Düssen Befehl kann jebrukt werden, to eene lokale Chart to verifijeren. Mehrere andrej Befehle bieten
+'--verify'-Flags, dej desülwije Validierung usföhren. To een signiertes Packäschen to jenereren, bruken Sie
+den 'helm package --sign'-Befehl.
 `
 
 func newVerifyCmd(out io.Writer) *cobra.Command {
@@ -41,7 +41,7 @@ func newVerifyCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "verify PATH",
-		Short: "verify that a chart at the given path has been signed and is valid",
+		Short: "verifijeren Sie, dat eene Chart up dem jejewebenen Pfad signiert un jültich es",
 		Long:  verifyDesc,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, _ string) ([]string, cobra.ShellCompDirective) {
@@ -64,7 +64,7 @@ func newVerifyCmd(out io.Writer) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVar(&client.Keyring, "keyring", defaultKeyring(), "keyring containing public keys")
+	cmd.Flags().StringVar(&client.Keyring, "keyring", defaultKeyring(), "Keyring, de öffentliche Slötels enthält")
 
 	return cmd
 }

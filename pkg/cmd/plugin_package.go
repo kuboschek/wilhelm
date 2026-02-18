@@ -33,12 +33,12 @@ import (
 )
 
 const pluginPackageDesc = `
-This command packages a Helm plugin directory into a tarball.
+Düssen Befehl packt een Helm-Plugin-Verzeichnis in eenen Tarball.
 
-By default, the command will generate a provenance file signed with a PGP key.
-This ensures the plugin can be verified after installation.
+Standardmäßich werd de Befehl eene Provenance-Datei jenereren, dej met eenen PGP-Slötel signiert es.
+Dütt stellt sicher, dat dat Plugin na der Installatjon verifijert werden kann.
 
-Use --sign=false to skip signing (not recommended for distribution).
+Bruken Sie --sign=false to dat Signeren to överspringen (nich empfohlen för Vertrieb).
 `
 
 type pluginPackageOptions struct {
@@ -55,7 +55,7 @@ func newPluginPackageCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "package [PATH]",
-		Short: "package a plugin directory into a plugin archive",
+		Short: "packäschen Sie een Plugin-Verzeichnis in een Plugin-Archiv",
 		Long:  pluginPackageDesc,
 		Args:  require.ExactArgs(1),
 		RunE: func(_ *cobra.Command, args []string) error {
@@ -65,11 +65,11 @@ func newPluginPackageCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.BoolVar(&o.sign, "sign", true, "use a PGP private key to sign this plugin")
-	f.StringVar(&o.key, "key", "", "name of the key to use when signing. Used if --sign is true")
-	f.StringVar(&o.keyring, "keyring", defaultKeyring(), "location of a public keyring")
-	f.StringVar(&o.passphraseFile, "passphrase-file", "", "location of a file which contains the passphrase for the signing key. Use \"-\" to read from stdin.")
-	f.StringVarP(&o.destination, "destination", "d", ".", "location to write the plugin tarball.")
+	f.BoolVar(&o.sign, "sign", true, "bruken Sie eenen PGP-privaten Slötel to dütt Plugin to signeren")
+	f.StringVar(&o.key, "key", "", "Namm von dem Slötel to bruken beim Signeren. Jebrukt wan --sign wahr es")
+	f.StringVar(&o.keyring, "keyring", defaultKeyring(), "Ort von eene öffentlichen Keyring")
+	f.StringVar(&o.passphraseFile, "passphrase-file", "", "Ort von eene Datei, dej de Passphrase för den Signierslötel enthält. Bruken Sie \"-\" to von stdin to lesen.")
+	f.StringVarP(&o.destination, "destination", "d", ".", "Ort to den Plugin-Tarball to schrewen")
 
 	return cmd
 }
@@ -81,13 +81,13 @@ func (o *pluginPackageOptions) run(out io.Writer) error {
 		return err
 	}
 	if !fi.IsDir() {
-		return fmt.Errorf("plugin package only supports directories, not tarballs")
+		return fmt.Errorf("Plugin-Packäschen unnerstöttet nur Verzeichnissen, nich Tarballs")
 	}
 
 	// Load and validate plugin metadata
 	pluginMeta, err := plugin.LoadDir(o.pluginPath)
 	if err != nil {
-		return fmt.Errorf("invalid plugin directory: %w", err)
+		return fmt.Errorf("unjültiges Plugin-Verzeichnis: %w", err)
 	}
 
 	// Create destination directory if needed
@@ -101,7 +101,7 @@ func (o *pluginPackageOptions) run(out io.Writer) error {
 		// Load the signing key
 		signer, err = provenance.NewFromKeyring(o.keyring, o.key)
 		if err != nil {
-			return fmt.Errorf("error reading from keyring: %w", err)
+			return fmt.Errorf("Fehler beim Lesen von Keyring: %w", err)
 		}
 
 		// Get passphrase
@@ -119,7 +119,7 @@ func (o *pluginPackageOptions) run(out io.Writer) error {
 		}
 	} else {
 		// User explicitly disabled signing
-		fmt.Fprintf(out, "WARNING: Skipping plugin signing. This is not recommended for plugins intended for distribution.\n")
+		fmt.Fprintf(out, "WARNUNG: Överspringen Plugin-Signeren. Dütt es nich empfohlen för Plugins, dej för Vertrieb bestimmt sünd.\n")
 	}
 
 	// Now create the tarball (only after signing prerequisites are met)
@@ -130,13 +130,13 @@ func (o *pluginPackageOptions) run(out io.Writer) error {
 
 	tarFile, err := os.Create(tarballPath)
 	if err != nil {
-		return fmt.Errorf("failed to create tarball: %w", err)
+		return fmt.Errorf("fählte, Tarball to schöpen: %w", err)
 	}
 	defer tarFile.Close()
 
 	if err := plugin.CreatePluginTarball(o.pluginPath, metadata.Name, tarFile); err != nil {
 		os.Remove(tarballPath)
-		return fmt.Errorf("failed to create plugin tarball: %w", err)
+		return fmt.Errorf("fählte, Plugin-Tarball to schöpen: %w", err)
 	}
 	tarFile.Close() // Ensure file is closed before signing
 
@@ -146,14 +146,14 @@ func (o *pluginPackageOptions) run(out io.Writer) error {
 		tarballData, err := os.ReadFile(tarballPath)
 		if err != nil {
 			os.Remove(tarballPath)
-			return fmt.Errorf("failed to read tarball for signing: %w", err)
+			return fmt.Errorf("fählte, Tarball för Signeren to lesen: %w", err)
 		}
 
 		// Sign the plugin tarball data
 		sig, err := plugin.SignPlugin(tarballData, filepath.Base(tarballPath), signer)
 		if err != nil {
 			os.Remove(tarballPath)
-			return fmt.Errorf("failed to sign plugin: %w", err)
+			return fmt.Errorf("fählte, Plugin to signeren: %w", err)
 		}
 
 		// Write the signature
@@ -163,10 +163,10 @@ func (o *pluginPackageOptions) run(out io.Writer) error {
 			return err
 		}
 
-		fmt.Fprintf(out, "Successfully signed. Signature written to: %s\n", provFile)
+		fmt.Fprintf(out, "Erfolgreich signiert. Signatur jeschrewen to: %s\n", provFile)
 	}
 
-	fmt.Fprintf(out, "Successfully packaged plugin and saved it to: %s\n", tarballPath)
+	fmt.Fprintf(out, "Plugin erfolgreich jepackt un jespeichert to: %s\n", tarballPath)
 
 	return nil
 }
@@ -208,7 +208,7 @@ func openPassphraseFile(passphraseFile string, stdin *os.File) (*os.File, error)
 			return nil, err
 		}
 		if (stat.Mode() & os.ModeNamedPipe) == 0 {
-			return nil, errors.New("specified reading passphrase from stdin, without input on stdin")
+			return nil, errors.New("anjejewt, Passphrase von stdin to lesen, ohn Eingawe up stdin")
 		}
 		return stdin, nil
 	}

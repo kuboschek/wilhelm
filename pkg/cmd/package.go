@@ -32,19 +32,19 @@ import (
 )
 
 const packageDesc = `
-This command packages a chart into a versioned chart archive file. If a path
-is given, this will look at that path for a chart (which must contain a
-Chart.yaml file) and then package that directory.
+Düssen Befehl packt eene Chart in eene versjonierde Chart-Archiv-Datei. Wan een Pfad
+anjejewt es, werd düssen to dej Chart schauen (dej muss eene Chart.yaml-Datei enthalten)
+und dan düsses Verzeichnis packäschen.
 
-Versioned chart archives are used by Helm package repositories.
+Versjonierde Chart-Archive werden von Helm-Package-Repositorien jebrukt.
 
-To sign a chart, use the '--sign' flag. In most cases, you should also
-provide '--keyring path/to/secret/keys' and '--key keyname'.
+To eene Chart to signeren, bruken Sie dat '--sign'-Flag. In de meesten Fällen sollten Sie ook
+'--keyring path/to/secret/keys' und '--key keyname' anjewen.
 
   $ helm package --sign ./mychart --key mykey --keyring ~/.gnupg/secring.gpg
 
-If '--keyring' is not specified, Helm usually defaults to the public keyring
-unless your environment is otherwise configured.
+Wan '--keyring' nich anjejewt es, brukd Helm normalerwieschen den öffentlichen Keyring,
+uswennich Ehr Umjewung andersch konfiguriert es.
 `
 
 func newPackageCmd(out io.Writer) *cobra.Command {
@@ -53,18 +53,18 @@ func newPackageCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "package [CHART_PATH] [...]",
-		Short: "package a chart directory into a chart archive",
+		Short: "packäschen Sie een Chart-Verzeichnis in een Chart-Archiv",
 		Long:  packageDesc,
 		RunE: func(_ *cobra.Command, args []string) error {
 			if len(args) == 0 {
-				return fmt.Errorf("need at least one argument, the path to the chart")
+				return fmt.Errorf("bruke mindestens een Argument, den Pfad to de Chart")
 			}
 			if client.Sign {
 				if client.Key == "" {
-					return errors.New("--key is required for signing a package")
+					return errors.New("--key es erforderlich för dat Signeren von eene Packäschen")
 				}
 				if client.Keyring == "" {
-					return errors.New("--keyring is required for signing a package")
+					return errors.New("--keyring es erforderlich för dat Signeren von eene Packäschen")
 				}
 			}
 			client.RepositoryConfig = settings.RepositoryConfig
@@ -78,7 +78,7 @@ func newPackageCmd(out io.Writer) *cobra.Command {
 			registryClient, err := newRegistryClient(client.CertFile, client.KeyFile, client.CaFile,
 				client.InsecureSkipTLSVerify, client.PlainHTTP, client.Username, client.Password)
 			if err != nil {
-				return fmt.Errorf("missing registry client: %w", err)
+				return fmt.Errorf("Registry-Client fehlt: %w", err)
 			}
 
 			for i := range args {
@@ -111,28 +111,28 @@ func newPackageCmd(out io.Writer) *cobra.Command {
 				if err != nil {
 					return err
 				}
-				fmt.Fprintf(out, "Successfully packaged chart and saved it to: %s\n", p)
+				fmt.Fprintf(out, "Chart erfolgreich jepackt un jespeichert to: %s\n", p)
 			}
 			return nil
 		},
 	}
 
 	f := cmd.Flags()
-	f.BoolVar(&client.Sign, "sign", false, "use a PGP private key to sign this package")
-	f.StringVar(&client.Key, "key", "", "name of the key to use when signing. Used if --sign is true")
-	f.StringVar(&client.Keyring, "keyring", defaultKeyring(), "location of a public keyring")
-	f.StringVar(&client.PassphraseFile, "passphrase-file", "", `location of a file which contains the passphrase for the signing key. Use "-" in order to read from stdin.`)
-	f.StringVar(&client.Version, "version", "", "set the version on the chart to this semver version")
-	f.StringVar(&client.AppVersion, "app-version", "", "set the appVersion on the chart to this version")
-	f.StringVarP(&client.Destination, "destination", "d", ".", "location to write the chart.")
-	f.BoolVarP(&client.DependencyUpdate, "dependency-update", "u", false, `update dependencies from "Chart.yaml" to dir "charts/" before packaging`)
-	f.StringVar(&client.Username, "username", "", "chart repository username where to locate the requested chart")
-	f.StringVar(&client.Password, "password", "", "chart repository password where to locate the requested chart")
-	f.StringVar(&client.CertFile, "cert-file", "", "identify HTTPS client using this SSL certificate file")
-	f.StringVar(&client.KeyFile, "key-file", "", "identify HTTPS client using this SSL key file")
-	f.BoolVar(&client.InsecureSkipTLSVerify, "insecure-skip-tls-verify", false, "skip tls certificate checks for the chart download")
-	f.BoolVar(&client.PlainHTTP, "plain-http", false, "use insecure HTTP connections for the chart download")
-	f.StringVar(&client.CaFile, "ca-file", "", "verify certificates of HTTPS-enabled servers using this CA bundle")
+	f.BoolVar(&client.Sign, "sign", false, "bruken Sie eenen PGP-privaten Slötel to düsse Packäschen to signeren")
+	f.StringVar(&client.Key, "key", "", "Namm von dem Slötel to bruken beim Signeren. Jebrukt wan --sign wahr es")
+	f.StringVar(&client.Keyring, "keyring", defaultKeyring(), "Ort von eene öffentlichen Keyring")
+	f.StringVar(&client.PassphraseFile, "passphrase-file", "", `Ort von eene Datei, dej de Passphrase för den Signierslötel enthält. Bruken Sie "-" to von stdin to lesen.`)
+	f.StringVar(&client.Version, "version", "", "setten Sie de Versjon up de Chart to düsse Semver-Versjon")
+	f.StringVar(&client.AppVersion, "app-version", "", "setten Sie de appVersion up de Chart to düsse Versjon")
+	f.StringVarP(&client.Destination, "destination", "d", ".", "Ort to de Chart to schrewen")
+	f.BoolVarP(&client.DependencyUpdate, "dependency-update", "u", false, `aktualiseren Sie Afhängichkeiten von "Chart.yaml" to Verzeichnis "charts/" vör dem Packäschen`)
+	f.StringVar(&client.Username, "username", "", "Chart-Repository-Benutzername wo de anjefraede Chart to finnen es")
+	f.StringVar(&client.Password, "password", "", "Chart-Repository-Passwort wo de anjefraede Chart to finnen es")
+	f.StringVar(&client.CertFile, "cert-file", "", "identifijeren Sie HTTPS-Client met düsser SSL-Zertifikat-Datei")
+	f.StringVar(&client.KeyFile, "key-file", "", "identifijeren Sie HTTPS-Client met düsser SSL-Slötel-Datei")
+	f.BoolVar(&client.InsecureSkipTLSVerify, "insecure-skip-tls-verify", false, "överspringen Sie TLS-Zertifikat-Prövungen för den Chart-Download")
+	f.BoolVar(&client.PlainHTTP, "plain-http", false, "bruken Sie unsichere HTTP-Verbindungen för den Chart-Download")
+	f.StringVar(&client.CaFile, "ca-file", "", "verifijeren Sie Zertifikate von HTTPS-aktivierten Servern met düssem CA-Bundle")
 
 	return cmd
 }

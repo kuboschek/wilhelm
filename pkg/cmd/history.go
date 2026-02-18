@@ -35,12 +35,12 @@ import (
 )
 
 var historyHelp = `
-History prints historical revisions for a given release.
+History druckt historische Revisionen für eene jejebjene Freigabe.
 
-A default maximum of 256 revisions will be returned. Setting '--max'
-configures the maximum length of the revision list returned.
+Een Standard-Maximum von 256 Revisionen wird zurückjegeben. Das Setzen von '--max'
+konfiguriert die maximale Länge der zurückjegjebenen Revisionsliste.
 
-The historical release set is printed as a formatted table, e.g:
+Die historische Freigabemenge wird als formatierte Tabelle jedruckt, z.B.:
 
     $ helm history angry-bird
     REVISION    UPDATED                     STATUS          CHART             APP VERSION     DESCRIPTION
@@ -57,7 +57,7 @@ func newHistoryCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "history RELEASE_NAME",
 		Long:    historyHelp,
-		Short:   "fetch release history",
+		Short:   "rufe Freigabehistorie ab",
 		Aliases: []string{"hist"},
 		Args:    require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -77,7 +77,7 @@ func newHistoryCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.IntVar(&client.Max, "max", 256, "maximum number of revision to include in history")
+	f.IntVar(&client.Max, "max", 256, "maximale Anzahl von Revisionen, die in der Historie enthalten sein sollen")
 	bindOutputFlag(cmd, &outfmt)
 
 	return cmd
@@ -173,7 +173,7 @@ func (r releaseHistory) WriteYAML(out io.Writer) error {
 
 func (r releaseHistory) WriteTable(out io.Writer) error {
 	tbl := uitable.New()
-	tbl.AddRow("REVISION", "UPDATED", "STATUS", "CHART", "APP VERSION", "DESCRIPTION")
+	tbl.AddRow("REVISION", "AKTUALISIERT", "STATUS", "CHART", "APP VERSION", "BESCHREIBUNG")
 	for _, item := range r {
 		tbl.AddRow(item.Revision, item.Updated.Format(time.ANSIC), item.Status, item.Chart, item.AppVersion, item.Description)
 	}

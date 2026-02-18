@@ -82,10 +82,10 @@ func TestPluginPackageWithoutSigning(t *testing.T) {
 
 	// Output should contain warning about skipping signing
 	output := out.String()
-	if !strings.Contains(output, "WARNING: Skipping plugin signing") {
+	if !strings.Contains(output, "WARNUNG: Överspringen Plugin-Signeren") {
 		t.Error("should print warning when signing is skipped")
 	}
-	if !strings.Contains(output, "Successfully packaged") {
+	if !strings.Contains(output, "Plugin erfolgreich jepackt") {
 		t.Error("should print success message")
 	}
 }

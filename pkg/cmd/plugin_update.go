@@ -38,7 +38,7 @@ func newPluginUpdateCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "update <plugin>...",
 		Aliases: []string{"up"},
-		Short:   "update one or more Helm plugins",
+		Short:   "aktualiseren Sie een oder mehrere Helm-Plugins",
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			return compListPlugins(toComplete, args), cobra.ShellCompDirectiveNoFileComp
 		},
@@ -54,7 +54,7 @@ func newPluginUpdateCmd(out io.Writer) *cobra.Command {
 
 func (o *pluginUpdateOptions) complete(args []string) error {
 	if len(args) == 0 {
-		return errors.New("please provide plugin name to update")
+		return errors.New("jewen Sie bitte eenen Plugin-Namm to aktualiseren an")
 	}
 	o.names = args
 	return nil
@@ -71,12 +71,12 @@ func (o *pluginUpdateOptions) run(out io.Writer) error {
 	for _, name := range o.names {
 		if found := findPlugin(plugins, name); found != nil {
 			if err := updatePlugin(found); err != nil {
-				errorPlugins = append(errorPlugins, fmt.Errorf("failed to update plugin %s, got error (%v)", name, err))
+				errorPlugins = append(errorPlugins, fmt.Errorf("fählte, Plugin %s to aktualiseren, Fehler (%v) jekrejen", name, err))
 			} else {
-				fmt.Fprintf(out, "Updated plugin: %s\n", name)
+				fmt.Fprintf(out, "Plugin aktualisiert: %s\n", name)
 			}
 		} else {
-			errorPlugins = append(errorPlugins, fmt.Errorf("plugin: %s not found", name))
+			errorPlugins = append(errorPlugins, fmt.Errorf("Plugin: %s nich jefunnen", name))
 		}
 	}
 	if len(errorPlugins) > 0 {

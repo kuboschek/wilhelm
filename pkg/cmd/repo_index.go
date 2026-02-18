@@ -31,16 +31,15 @@ import (
 )
 
 const repoIndexDesc = `
-Read the current directory, generate an index file based on the charts found
-and write the result to 'index.yaml' in the current directory.
+Lest dat aktuelle Verzeichnis, jenereert eene Indexdatei basierend up de je-funnenen Charts
+un schrifft dat Resultat na 'index.yaml' in dat aktuelle Verzeichnis.
 
-This tool is used for creating an 'index.yaml' file for a chart repository. To
-set an absolute URL to the charts, use '--url' flag.
+Dütt Werkzeug ward je-bruukt, öm eene 'index.yaml'-Datei för een Chart-Repository to erstellen. Öm
+eene absolute URL för de Charts to setzen, bruukt de '--url'-Flagge.
 
-To merge the generated index with an existing index file, use the '--merge'
-flag. In this case, the charts found in the current directory will be merged
-into the index passed in with --merge, with local charts taking priority over
-existing charts.
+Öm den je-jenerierten Index met eener existierenden Indexdatei to verschmelzen, bruukt de '--merge'-
+Flagge. In düssem Fall warden de Charts, de in dat aktuelle Verzeichnis je-funnen sind, in den Index,
+de met --merge angeben ward, je-merged, wobei lokale Charts Priorität övver existierende Charts hemm.
 `
 
 type repoIndexOptions struct {
@@ -55,7 +54,7 @@ func newRepoIndexCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "index [DIR]",
-		Short: "generate an index file given a directory containing packaged charts",
+		Short: "eene Indexdatei jenereeren för een Verzeichnis met je-packte Charts",
 		Long:  repoIndexDesc,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, _ string) ([]string, cobra.ShellCompDirective) {
@@ -73,9 +72,9 @@ func newRepoIndexCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.StringVar(&o.url, "url", "", "url of chart repository")
-	f.StringVar(&o.merge, "merge", "", "merge the generated index into the given index")
-	f.BoolVar(&o.json, "json", false, "output in JSON format")
+	f.StringVar(&o.url, "url", "", "URL vun dat Chart-Repository")
+	f.StringVar(&o.merge, "merge", "", "den je-jenerierten Index in den angeben Index mergen")
+	f.BoolVar(&o.json, "json", false, "Utgawe in JSON-Format")
 
 	return cmd
 }
@@ -105,7 +104,7 @@ func index(dir, url, mergeTo string, json bool) error {
 		} else {
 			i2, err = repo.LoadIndexFile(mergeTo)
 			if err != nil {
-				return fmt.Errorf("merge failed: %w", err)
+				return fmt.Errorf("Merge je-feilt: %w", err)
 			}
 		}
 		i.Merge(i2)

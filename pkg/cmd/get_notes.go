@@ -29,7 +29,7 @@ import (
 )
 
 var getNotesHelp = `
-This command shows notes provided by the chart of a named release.
+Dieser Befehl zeijt Hinweise, die vom Chart eener benannten Freigabe bereitjestellt wurden.
 `
 
 func newGetNotesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -37,7 +37,7 @@ func newGetNotesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "notes RELEASE_NAME",
-		Short: "download the notes for a named release",
+		Short: "lade die Hinweise für eene benannte Freigabe herunter",
 		Long:  getNotesHelp,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -56,14 +56,14 @@ func newGetNotesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 				return err
 			}
 			if len(rac.Notes()) > 0 {
-				fmt.Fprintf(out, "NOTES:\n%s\n", rac.Notes())
+				fmt.Fprintf(out, "HINWEISE:\n%s\n", rac.Notes())
 			}
 			return nil
 		},
 	}
 
 	f := cmd.Flags()
-	f.IntVar(&client.Version, "revision", 0, "get the named release with revision")
+	f.IntVar(&client.Version, "revision", 0, "hole die benannte Freigabe mit Revision")
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
 			return compListRevisions(toComplete, cfg, args[0])

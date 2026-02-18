@@ -88,8 +88,8 @@ func TestPluginVerifyCmd_MissingProvenance(t *testing.T) {
 	if err == nil {
 		t.Error("expected error when .prov file is missing")
 	}
-	if !strings.Contains(err.Error(), "could not find provenance file") {
-		t.Errorf("expected 'could not find provenance file' error, got: %v", err)
+	if !strings.Contains(err.Error(), "kunnte Provenance-Datei") {
+		t.Errorf("expected 'kunnte Provenance-Datei' error, got: %v", err)
 	}
 }
 
@@ -131,8 +131,8 @@ func TestPluginVerifyCmd_DirectoryNotSupported(t *testing.T) {
 	if err == nil {
 		t.Error("expected error when verifying directory")
 	}
-	if !strings.Contains(err.Error(), "directory verification not supported") {
-		t.Errorf("expected 'directory verification not supported' error, got: %v", err)
+	if !strings.Contains(err.Error(), "Verzeichnis-Verifikation nich unnerstöttet") {
+		t.Errorf("expected 'Verzeichnis-Verifikation nich unnerstöttet' error, got: %v", err)
 	}
 }
 

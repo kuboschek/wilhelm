@@ -4,6 +4,6 @@ NAMESPACE: default
 STATUS: deployed
 REVISION: 1
 DESCRIPTION: Install complete
-TEST SUITE: None
+TEST SUITE: Keine
 NOTES:
 PARENT NOTES

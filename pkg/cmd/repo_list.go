@@ -34,7 +34,7 @@ func newRepoListCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "list",
 		Aliases:           []string{"ls"},
-		Short:             "list chart repositories",
+		Short:             "Chart-Repositories oplisten",
 		Args:              require.NoArgs,
 		ValidArgsFunction: noMoreArgsCompFunc,
 		RunE: func(cmd *cobra.Command, _ []string) error {
@@ -43,7 +43,7 @@ func newRepoListCmd(out io.Writer) *cobra.Command {
 			// repositories will be 0.
 			f, _ := repo.LoadFile(settings.RepositoryConfig)
 			if len(f.Repositories) == 0 && outfmt != output.JSON && outfmt != output.YAML {
-				fmt.Fprintln(cmd.ErrOrStderr(), "no repositories to show")
+				fmt.Fprintln(cmd.ErrOrStderr(), "keene Repositories to wiesen")
 				return nil
 			}
 
@@ -56,7 +56,7 @@ func newRepoListCmd(out io.Writer) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVar(&noHeaders, "no-headers", false, "suppress headers in the output")
+	cmd.Flags().BoolVar(&noHeaders, "no-headers", false, "Kopfzeilen in de Utgawe ünnerdrücken")
 	bindOutputFlag(cmd, &outfmt)
 	return cmd
 }
@@ -74,7 +74,7 @@ type repoListWriter struct {
 func (r *repoListWriter) WriteTable(out io.Writer) error {
 	table := uitable.New()
 	if !r.noHeaders {
-		table.AddRow("NAME", "URL")
+		table.AddRow("NAAME", "URL")
 	}
 	for _, re := range r.repos {
 		table.AddRow(re.Name, re.URL)

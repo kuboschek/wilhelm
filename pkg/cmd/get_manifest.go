@@ -29,11 +29,11 @@ import (
 )
 
 var getManifestHelp = `
-This command fetches the generated manifest for a given release.
+Dieser Befehl holt das jenerierte Manifest für eene jejebjene Freigabe.
 
-A manifest is a YAML-encoded representation of the Kubernetes resources that
-were generated from this release's chart(s). If a chart is dependent on other
-charts, those resources will also be included in the manifest.
+Een Manifest ist eene YAML-kodierte Darstellung der Kubernetes-Ressourcen, die
+aus dem Chart (Charts) dieser Freigabe jeneriert wurden. Wenn een Chart von anderen
+Charts abhänjt, werden diese Ressourcen ebenfalls im Manifest enthalten sein.
 `
 
 func newGetManifestCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -41,7 +41,7 @@ func newGetManifestCmd(cfg *action.Configuration, out io.Writer) *cobra.Command 
 
 	cmd := &cobra.Command{
 		Use:   "manifest RELEASE_NAME",
-		Short: "download the manifest for a named release",
+		Short: "lade das Manifest für eene benannte Freigabe herunter",
 		Long:  getManifestHelp,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -64,7 +64,7 @@ func newGetManifestCmd(cfg *action.Configuration, out io.Writer) *cobra.Command 
 		},
 	}
 
-	cmd.Flags().IntVar(&client.Version, "revision", 0, "get the named release with revision")
+	cmd.Flags().IntVar(&client.Version, "revision", 0, "hole die benannte Freigabe mit Revision")
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
 			return compListRevisions(toComplete, cfg, args[0])
