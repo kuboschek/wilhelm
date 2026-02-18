@@ -35,7 +35,7 @@ func TestSearchHubCmd(t *testing.T) {
 	// The expected output has the URL to the mocked search service in it
 	// Trailing spaces are necessary to preserve in "expected" as the uitable package adds
 	// them during printing.
-	var expected = fmt.Sprintf(`URL                                             	CHART VERSION	APP VERSION	DESCRIPTION                                   
+	var expected = fmt.Sprintf(`URL                                             	CHART-VERSION	APP-VERSION	BESCHRIEWUNG                                  
 %s/charts/stable/phpmyadmin 	3.0.0        	4.9.0-1    	phpMyAdmin is an mysql administration frontend
 %s/charts/bitnami/phpmyadmin	3.0.0        	4.9.0-1    	phpMyAdmin is an mysql administration frontend
 `, ts.URL, ts.URL)
@@ -65,7 +65,7 @@ func TestSearchHubListRepoCmd(t *testing.T) {
 	// The expected output has the URL to the mocked search service in it
 	// Trailing spaces are necessary to preserve in "expected" as the uitable package adds
 	// them during printing.
-	var expected = fmt.Sprintf(`URL                                             	CHART VERSION	APP VERSION	DESCRIPTION                                   	REPO URL                     
+	var expected = fmt.Sprintf(`URL                                             	CHART-VERSION	APP-VERSION	BESCHRIEWUNG                                  	REPO-URL                     
 %s/charts/stable/phpmyadmin 	3.0.0        	4.9.0-1    	phpMyAdmin is an mysql administration frontend	https://charts.helm.sh/stable
 %s/charts/bitnami/phpmyadmin	3.0.0        	4.9.0-1    	phpMyAdmin is an mysql administration frontend	https://charts.bitnami.com   
 `, ts.URL, ts.URL)
@@ -94,8 +94,8 @@ func TestSearchHubFileCompletion(t *testing.T) {
 func TestSearchHubCmd_FailOnNoResponseTests(t *testing.T) {
 	var (
 		searchResult            = `{"data":[]}`
-		noResultFoundErr        = "Error: no results found\n"
-		noResultFoundWarn       = "No results found\n"
+		noResultFoundErr        = "Error: keene Resultate je-funnen\n"
+		noResultFoundWarn       = "Keene Resultate je-funnen\n"
 		noResultFoundWarnInList = "[]\n"
 	)
 

@@ -1,4 +1,4 @@
-Release "zany-bunny" has been upgraded. Happy Helming!
+Freigabe "zany-bunny" wurde aktualisiert. Frohes Helming!
 NAME: zany-bunny
 LAST DEPLOYED: Fri Sep  2 22:04:05 1977
 NAMESPACE: default

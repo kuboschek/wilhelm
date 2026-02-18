@@ -1,1 +1,1 @@
-Error: UPGRADE FAILED: "funny-bunny" has no deployed releases
+Error: AKTUALISIERUNG FEHLGESCHLAGEN: "funny-bunny" has no deployed releases

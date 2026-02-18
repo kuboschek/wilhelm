@@ -148,10 +148,10 @@ func TestUpdateCharts(t *testing.T) {
 	updateCharts([]*repo.ChartRepository{r}, b)
 
 	got := b.String()
-	if strings.Contains(got, "Unable to get an update") {
+	if strings.Contains(got, "Kann keen Update") {
 		t.Errorf("Failed to get a repo: %q", got)
 	}
-	if !strings.Contains(got, "Update Complete.") {
+	if !strings.Contains(got, "Update je-afsloten.") {
 		t.Error("Update was not successful")
 	}
 }
@@ -193,7 +193,7 @@ func TestUpdateChartsFailWithError(t *testing.T) {
 		t.Error("Repo update should return error because update of repository fails and 'fail-on-repo-update-fail' flag set")
 		return
 	}
-	var expectedErr = "failed to update the following repositories"
+	var expectedErr = "Update vun düsse Repositories je-feilt"
 	var receivedErr = err.Error()
 	if !strings.Contains(receivedErr, expectedErr) {
 		t.Errorf("Expected error (%s) but got (%s) instead", expectedErr, receivedErr)
@@ -203,10 +203,10 @@ func TestUpdateChartsFailWithError(t *testing.T) {
 	}
 
 	got := b.String()
-	if !strings.Contains(got, "Unable to get an update") {
+	if !strings.Contains(got, "Kann keen Update") {
 		t.Errorf("Repo should have failed update but instead got: %q", got)
 	}
-	if strings.Contains(got, "Update Complete.") {
+	if strings.Contains(got, "Update je-afsloten.") {
 		t.Error("Update was not successful and should return error message because 'fail-on-repo-update-fail' flag set")
 	}
 }
