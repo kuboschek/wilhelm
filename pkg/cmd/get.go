@@ -26,20 +26,20 @@ import (
 )
 
 var getHelp = `
-This command consists of multiple subcommands which can be used to
-get extended information about the release, including:
+Dieser Befehl besteht aus mehreren Unterbefehlen, die verwendet werden können, um
+erweiterte Informationen über die Freigabe zu erhalten, einschließlich:
 
-- The values used to generate the release
-- The generated manifest file
-- The notes provided by the chart of the release
-- The hooks associated with the release
-- The metadata of the release
+- Die Werte, die zur Generierung der Freigabe verwendet wurden
+- Die jenerierte Manifestdatei
+- Die vom Chart der Freigabe bereitjestellten Hinweise
+- Die mit der Freigabe verbundenen Hooks
+- Die Metadaten der Freigabe
 `
 
 func newGetCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "get",
-		Short: "download extended information of a named release",
+		Short: "lade erweiterte Informationen eener benannten Freigabe herunter",
 		Long:  getHelp,
 		Args:  require.NoArgs,
 	}

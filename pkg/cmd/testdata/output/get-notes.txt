@@ -1,2 +1,2 @@
-NOTES:
+HINWEISE:
 Some mock release notes!

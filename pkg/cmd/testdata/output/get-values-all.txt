@@ -1,2 +1,2 @@
-COMPUTED VALUES:
+BERECHNETE WERTE:
 name: value

@@ -29,7 +29,7 @@ import (
 )
 
 var getValuesHelp = `
-This command downloads a values file for a given release.
+Dieser Befehl lädt eene Wertedatei für eene jejebjene Freigabe herunter.
 `
 
 type valuesWriter struct {
@@ -43,7 +43,7 @@ func newGetValuesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "values RELEASE_NAME",
-		Short: "download the values file for a named release",
+		Short: "lade die Wertedatei für eene benannte Freigabe herunter",
 		Long:  getValuesHelp,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -62,7 +62,7 @@ func newGetValuesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.IntVar(&client.Version, "revision", 0, "get the named release with revision")
+	f.IntVar(&client.Version, "revision", 0, "hole die benannte Freigabe mit Revision")
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
 			return compListRevisions(toComplete, cfg, args[0])
@@ -74,7 +74,7 @@ func newGetValuesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 		log.Fatal(err)
 	}
 
-	f.BoolVarP(&client.AllValues, "all", "a", false, "dump all (computed) values")
+	f.BoolVarP(&client.AllValues, "all", "a", false, "jieb alle (berechneten) Werte aus")
 	bindOutputFlag(cmd, &outfmt)
 
 	return cmd
@@ -82,9 +82,9 @@ func newGetValuesCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 func (v valuesWriter) WriteTable(out io.Writer) error {
 	if v.allValues {
-		fmt.Fprintln(out, "COMPUTED VALUES:")
+		fmt.Fprintln(out, "BERECHNETE WERTE:")
 	} else {
-		fmt.Fprintln(out, "USER-SUPPLIED VALUES:")
+		fmt.Fprintln(out, "VOM BENUTZER BEREITJESTELLTE WERTE:")
 	}
 	return output.EncodeYAML(out, v.vals)
 }

@@ -29,13 +29,13 @@ import (
 )
 
 const rollbackDesc = `
-This command rolls back a release to a previous revision.
+Dieser Befehl rollt eene Freigabe auf eene frühere Revision zurück.
 
-The first argument of the rollback command is the name of a release, and the
-second is a revision (version) number. If this argument is omitted or set to
-0, it will roll back to the previous release.
+Das erste Argument des rollback-Befehls ist der Name eener Freigabe, und das
+zweite ist eene Revisionsnummer (Version). Wenn dieses Argument wegjelajjen oder auf
+0 jesetzt wird, wird auf die vorherige Freigabe zurückjerollt.
 
-To see revision numbers, run 'helm history RELEASE'.
+Um Revisionsnummern zu sehen, führen Sie 'helm history RELEASE' aus.
 `
 
 func newRollbackCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -43,7 +43,7 @@ func newRollbackCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "rollback <RELEASE> [REVISION]",
-		Short: "roll back a release to a previous revision",
+		Short: "rolle eene Freigabe auf eene frühere Revision zurück",
 		Long:  rollbackDesc,
 		Args:  require.MinimumNArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -61,7 +61,7 @@ func newRollbackCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			if len(args) > 1 {
 				ver, err := strconv.Atoi(args[1])
 				if err != nil {
-					return fmt.Errorf("could not convert revision to a number: %v", err)
+					return fmt.Errorf("konnte Revision nicht in eene Zahl umwandeln: %v", err)
 				}
 				client.Version = ver
 			}
@@ -76,22 +76,22 @@ func newRollbackCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 				return err
 			}
 
-			fmt.Fprintf(out, "Rollback was a success! Happy Helming!\n")
+			fmt.Fprintf(out, "Rollback war een Erfolj! Frohes Helmen!\n")
 			return nil
 		},
 	}
 
 	f := cmd.Flags()
-	f.BoolVar(&client.ForceReplace, "force-replace", false, "force resource updates by replacement")
-	f.BoolVar(&client.ForceReplace, "force", false, "deprecated")
-	f.MarkDeprecated("force", "use --force-replace instead")
-	f.BoolVar(&client.ForceConflicts, "force-conflicts", false, "if set server-side apply will force changes against conflicts")
-	f.StringVar(&client.ServerSideApply, "server-side", "auto", "must be \"true\", \"false\" or \"auto\". Object updates run in the server instead of the client (\"auto\" defaults the value from the previous chart release's method)")
-	f.BoolVar(&client.DisableHooks, "no-hooks", false, "prevent hooks from running during rollback")
-	f.DurationVar(&client.Timeout, "timeout", 300*time.Second, "time to wait for any individual Kubernetes operation (like Jobs for hooks)")
-	f.BoolVar(&client.WaitForJobs, "wait-for-jobs", false, "if set and --wait enabled, will wait until all Jobs have been completed before marking the release as successful. It will wait for as long as --timeout")
-	f.BoolVar(&client.CleanupOnFail, "cleanup-on-fail", false, "allow deletion of new resources created in this rollback when rollback fails")
-	f.IntVar(&client.MaxHistory, "history-max", settings.MaxHistory, "limit the maximum number of revisions saved per release. Use 0 for no limit")
+	f.BoolVar(&client.ForceReplace, "force-replace", false, "erzwinje Ressourcenaktualisierungen durch Ersetzung")
+	f.BoolVar(&client.ForceReplace, "force", false, "veraltet")
+	f.MarkDeprecated("force", "verwenden Sie stattdessen --force-replace")
+	f.BoolVar(&client.ForceConflicts, "force-conflicts", false, "wenn jesetzt, erzwingt Server-seitige Anwendung Änderungen jejjen Konflikte")
+	f.StringVar(&client.ServerSideApply, "server-side", "auto", "muss \"true\", \"false\" oder \"auto\" sein. Objekt-Updates laufen im Server statt im Client (\"auto\" verwendet standardmäßich den Wert der vorherigen Chart-Freigabemethode)")
+	f.BoolVar(&client.DisableHooks, "no-hooks", false, "verhindere Hooks während des Rollbacks")
+	f.DurationVar(&client.Timeout, "timeout", 300*time.Second, "Zeit zum Warten auf einzelne Kubernetes-Operationen (wie Jobs für Hooks)")
+	f.BoolVar(&client.WaitForJobs, "wait-for-jobs", false, "wenn jesetzt und --wait aktiviert, wird jewartet, bis alle Jobs abgeschlossen sind, bevor die Freigabe als erfoljreich markiert wird. Es wird so lange jewartet wie --timeout")
+	f.BoolVar(&client.CleanupOnFail, "cleanup-on-fail", false, "erlaube das Löschen neuer Ressourcen, die in diesem Rollback erstellt wurden, wenn der Rollback fehlschläjt")
+	f.IntVar(&client.MaxHistory, "history-max", settings.MaxHistory, "bejrenze die maximale Anzahl von Revisionen, die pro Freigabe jespeichert werden. Verwenden Sie 0 für keine Bejrenzung")
 	addDryRunFlag(cmd)
 	AddWaitFlag(cmd, &client.WaitStrategy)
 	cmd.MarkFlagsMutuallyExclusive("force-replace", "force-conflicts")

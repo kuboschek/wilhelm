@@ -41,7 +41,7 @@ func newGetMetadataCmd(cfg *action.Configuration, out io.Writer) *cobra.Command 
 
 	cmd := &cobra.Command{
 		Use:   "metadata RELEASE_NAME",
-		Short: "This command fetches metadata for a given release",
+		Short: "Dieser Befehl holt Metadaten für eene jejebjene Freigabe",
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			if len(args) != 0 {
@@ -59,7 +59,7 @@ func newGetMetadataCmd(cfg *action.Configuration, out io.Writer) *cobra.Command 
 	}
 
 	f := cmd.Flags()
-	f.IntVar(&client.Version, "revision", 0, "specify release revision")
+	f.IntVar(&client.Version, "revision", 0, "spezifiziere Freigabe-Revision")
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
 			return compListRevisions(toComplete, cfg, args[0])
@@ -81,13 +81,13 @@ func (w metadataWriter) WriteTable(out io.Writer) error {
 	formatApplyMethod := func(applyMethod string) string {
 		switch applyMethod {
 		case "":
-			return "client-side apply (defaulted)"
+			return "Client-seitige Anwendung (standardmäßich)"
 		case string(release.ApplyMethodClientSideApply):
-			return "client-side apply"
+			return "Client-seitige Anwendung"
 		case string(release.ApplyMethodServerSideApply):
-			return "server-side apply"
+			return "Server-seitige Anwendung"
 		default:
-			return fmt.Sprintf("unknown (%q)", applyMethod)
+			return fmt.Sprintf("unbekannt (%q)", applyMethod)
 		}
 	}
 
@@ -95,14 +95,14 @@ func (w metadataWriter) WriteTable(out io.Writer) error {
 	_, _ = fmt.Fprintf(out, "CHART: %v\n", w.metadata.Chart)
 	_, _ = fmt.Fprintf(out, "VERSION: %v\n", w.metadata.Version)
 	_, _ = fmt.Fprintf(out, "APP_VERSION: %v\n", w.metadata.AppVersion)
-	_, _ = fmt.Fprintf(out, "ANNOTATIONS: %v\n", k8sLabels.Set(w.metadata.Annotations).String())
-	_, _ = fmt.Fprintf(out, "LABELS: %v\n", k8sLabels.Set(w.metadata.Labels).String())
-	_, _ = fmt.Fprintf(out, "DEPENDENCIES: %v\n", w.metadata.FormattedDepNames())
-	_, _ = fmt.Fprintf(out, "NAMESPACE: %v\n", w.metadata.Namespace)
+	_, _ = fmt.Fprintf(out, "ANMERKUNGEN: %v\n", k8sLabels.Set(w.metadata.Annotations).String())
+	_, _ = fmt.Fprintf(out, "ETIKETTEN: %v\n", k8sLabels.Set(w.metadata.Labels).String())
+	_, _ = fmt.Fprintf(out, "ABHÄNJICHKEITEN: %v\n", w.metadata.FormattedDepNames())
+	_, _ = fmt.Fprintf(out, "NAMENSRAUM: %v\n", w.metadata.Namespace)
 	_, _ = fmt.Fprintf(out, "REVISION: %v\n", w.metadata.Revision)
 	_, _ = fmt.Fprintf(out, "STATUS: %v\n", w.metadata.Status)
-	_, _ = fmt.Fprintf(out, "DEPLOYED_AT: %v\n", w.metadata.DeployedAt)
-	_, _ = fmt.Fprintf(out, "APPLY_METHOD: %v\n", formatApplyMethod(w.metadata.ApplyMethod))
+	_, _ = fmt.Fprintf(out, "BEREITJESTELLT_AM: %v\n", w.metadata.DeployedAt)
+	_, _ = fmt.Fprintf(out, "ANWENDUNGSMETHODE: %v\n", formatApplyMethod(w.metadata.ApplyMethod))
 
 	return nil
 }
