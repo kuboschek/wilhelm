@@ -44,42 +44,42 @@ import (
 )
 
 const upgradeDesc = `
-This command upgrades a release to a new version of a chart.
+Dieser Befehl aktualisiert eene Freigabe auf eene neue Version eenes Charts.
 
-The upgrade arguments must be a release and chart. The chart
-argument can be either: a chart reference('example/mariadb'), a path to a chart directory,
-a packaged chart, or a fully qualified URL. For chart references, the latest
-version will be specified unless the '--version' flag is set.
+Die upgrade-Arjumente müssen eene Freigabe und een Chart sein. Das Chart-
+Arjument kann entweder sein: eene Chart-Referenz ('example/mariadb'), een Pfad zu eenen Chart-Verzeichnis,
+een jepackter Chart oder eene vollständije URL. Für Chart-Referenzen wird die neueste
+Version anjegjeben, es sei denn, die '--version' Flagge ist jesetzt.
 
-To override values in a chart, use either the '--values' flag and pass in a file
-or use the '--set' flag and pass configuration from the command line, to force string
-values, use '--set-string'. You can use '--set-file' to set individual
-values from a file when the value itself is too long for the command line
-or is dynamically generated. You can also use '--set-json' to set json values
-(scalars/objects/arrays) from the command line. Additionally, you can use '--set-json' and passing json object as a string.
+Um Werte in eenen Chart zu überschreiben, verwenden Sie entweder die '--values' Flagge und übergeben Sie eene Datei
+oder verwenden Sie die '--set' Flagge und übergeben Sie die Konfiguration von der Befehlszeile, um eenen
+String-Wert zu erzwingen, verwenden Sie '--set-string'. Sie können '--set-file' verwenden, um einzelne
+Werte aus eener Datei zu setzen, wenn der Wert selbst zu lang für die Befehlszeile ist
+oder dynamisch jeneriert wird. Sie können auch '--set-json' verwenden, um json-Werte
+(Skalare/Objekte/Arrays) von der Befehlszeile zu setzen. Zusätzlich können Sie '--set-json' verwenden und een json-Objekt als String übergeben.
 
-You can specify the '--values'/'-f' flag multiple times. The priority will be given to the
-last (right-most) file specified. For example, if both myvalues.yaml and override.yaml
-contained a key called 'Test', the value set in override.yaml would take precedence:
+Sie können die '--values'/'-f' Flagge mehrmals angjeben. Die Priorität wird der
+letzten (rechtesten) anjegjebenen Datei jegeben. Zum Beispiel, wenn sowohl myvalues.yaml als auch override.yaml
+eenen Schlüssel namens 'Test' enthalten, würde der in override.yaml jesetzte Wert Vorrang haben:
 
     $ helm upgrade -f myvalues.yaml -f override.yaml redis ./redis
 
-You can specify the '--set' flag multiple times. The priority will be given to the
-last (right-most) set specified. For example, if both 'bar' and 'newbar' values are
-set for a key called 'foo', the 'newbar' value would take precedence:
+Sie können die '--set' Flagge mehrmals angjeben. Die Priorität wird der
+letzten (rechtesten) anjegjebenen Menge jegeben. Zum Beispiel, wenn sowohl 'bar' als auch 'newbar' Werte für
+eenen Schlüssel namens 'foo' jesetzt sind, würde der 'newbar' Wert Vorrang haben:
 
     $ helm upgrade --set foo=bar --set foo=newbar redis ./redis
 
-You can update the values for an existing release with this command as well via the
-'--reuse-values' flag. The 'RELEASE' and 'CHART' arguments should be set to the original
-parameters, and existing values will be merged with any values set via '--values'/'-f'
-or '--set' flags. Priority is given to new values.
+Sie können die Werte für eene bestehende Freigabe mit diesem Befehl auch über die
+'--reuse-values' Flagge aktualisieren. Die 'RELEASE' und 'CHART' Arjumente sollten auf die ursprünglichen
+Parameter jesetzt werden, und bestehende Werte werden mit allen Werten zusammenjeführt, die über '--values'/'-f'
+oder '--set' Flaggen jesetzt sind. Priorität wird neuen Werten jegeben.
 
     $ helm upgrade --reuse-values --set foo=bar --set foo=newbar redis ./redis
 
-The --dry-run flag will output all generated chart manifests, including Secrets
-which can contain sensitive values. To hide Kubernetes Secrets use the
---hide-secret flag. Please carefully consider how and when these flags are used.
+Die --dry-run Flagge wird alle jenerierten Chart-Manifeste ausgeben, einschließlich Secrets,
+die sensible Werte enthalten können. Um Kubernetes Secrets zu verbergen, verwenden Sie die
+--hide-secret Flagge. Bitte bedenken Sie sorgfältich, wie und wann diese Flaggen verwendet werden.
 `
 
 func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -90,7 +90,7 @@ func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "upgrade [RELEASE] [CHART]",
-		Short: "upgrade a release",
+		Short: "aktualisiere eene Freigabe",
 		Long:  upgradeDesc,
 		Args:  require.ExactArgs(2),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -108,7 +108,7 @@ func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			registryClient, err := newRegistryClient(client.CertFile, client.KeyFile, client.CaFile,
 				client.InsecureSkipTLSVerify, client.PlainHTTP, client.Username, client.Password)
 			if err != nil {
-				return fmt.Errorf("missing registry client: %w", err)
+				return fmt.Errorf("fehlender Registry-Client: %w", err)
 			}
 			client.SetRegistryClient(registryClient)
 
@@ -128,7 +128,7 @@ func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 				if errors.Is(err, driver.ErrReleaseNotFound) || isReleaseUninstalled(versions) {
 					// Only print this to stdout for table output
 					if outfmt == output.Table {
-						fmt.Fprintf(out, "Release %q does not exist. Installing it now.\n", args[0])
+						fmt.Fprintf(out, "Freigabe %q existiert nicht. Installiere sie jetzt.\n", args[0])
 					}
 					instClient := action.NewInstall(cfg)
 					instClient.CreateNamespace = createNamespace
@@ -205,7 +205,7 @@ func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			}
 			if req := ac.MetaDependencies(); len(req) > 0 {
 				if err := action.CheckDependencies(ch, req); err != nil {
-					err = fmt.Errorf("an error occurred while checking for chart dependencies. You may need to run `helm dependency build` to fetch missing dependencies: %w", err)
+					err = fmt.Errorf("een Fehler ist beim Prüfen der Chart-Abhängigkeiten aufjetreten. Sie müssen möjlicherweise `helm dependency build` ausführen, um fehlende Abhängigkeiten zu holen: %w", err)
 					if client.DependencyUpdate {
 						man := &downloader.Manager{
 							Out:              out,
@@ -223,7 +223,7 @@ func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 						}
 						// Reload the chart with the updated Chart.lock file.
 						if ch, err = loader.Load(chartPath); err != nil {
-							return fmt.Errorf("failed reloading chart after repo update: %w", err)
+							return fmt.Errorf("fehlerhafte Neuladung des Charts nach Repo-Aktualisierung: %w", err)
 						}
 					} else {
 						return err
@@ -246,17 +246,17 @@ func newUpgradeCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			signal.Notify(cSignal, os.Interrupt, syscall.SIGTERM)
 			go func() {
 				<-cSignal
-				fmt.Fprintf(out, "Release %s has been cancelled.\n", args[0])
+				fmt.Fprintf(out, "Freigabe %s wurde abjebrochen.\n", args[0])
 				cancel()
 			}()
 
 			rel, err := client.RunWithContext(ctx, args[0], ch, vals)
 			if err != nil {
-				return fmt.Errorf("UPGRADE FAILED: %w", err)
+				return fmt.Errorf("AKTUALISIERUNG FEHLGESCHLAGEN: %w", err)
 			}
 
 			if outfmt == output.Table {
-				fmt.Fprintf(out, "Release %q has been upgraded. Happy Helming!\n", args[0])
+				fmt.Fprintf(out, "Freigabe %q wurde aktualisiert. Frohes Helming!\n", args[0])
 			}
 
 			return outfmt.Write(out, &statusPrinter{
