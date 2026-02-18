@@ -34,7 +34,7 @@ func newPluginListCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "list",
 		Aliases:           []string{"ls"},
-		Short:             "list installed Helm plugins",
+		Short:             "listen Sie installierde Helm-Plugins up",
 		ValidArgsFunction: noMoreArgsCompFunc,
 		RunE: func(_ *cobra.Command, _ []string) error {
 			slog.Debug("pluginDirs", "directory", settings.PluginsDirectory)
@@ -71,7 +71,7 @@ func newPluginListCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.StringVar(&pluginType, "type", "", "Plugin type")
+	f.StringVar(&pluginType, "type", "", "Plugin-Typ")
 
 	return cmd
 }

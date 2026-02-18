@@ -33,24 +33,24 @@ import (
 )
 
 const createDesc = `
-This command creates a chart directory along with the common files and
-directories used in a chart.
+Düssen Befehl schöpt een Chart-Verzeichnis mit de gemeenen Datein und
+Verzeichnissen, dej in eene Chart jebraucht werden.
 
-For example, 'helm create foo' will create a directory structure that looks
-something like this:
+Zum Beispeel, 'helm create foo' werd eene Verzeichnisstruktur schöpen, dej
+also utsieht:
 
     foo/
-    ├── .helmignore   # Contains patterns to ignore when packaging Helm charts.
-    ├── Chart.yaml    # Information about your chart
-    ├── values.yaml   # The default values for your templates
-    ├── charts/       # Charts that this chart depends on
-    └── templates/    # The template files
-        └── tests/    # The test files
+    ├── .helmignore   # Enthält Muster, dej beim Packäschen von Helm-Charts ijgnoriert werden.
+    ├── Chart.yaml    # Informatsjonen över Ehr Chart
+    ├── values.yaml   # De Standardwerten för Ehr Templates
+    ├── charts/       # Charts, von dej düsse Chart afhängich es
+    └── templates/    # De Template-Datein
+        └── tests/    # De Test-Datein
 
-'helm create' takes a path for an argument. If directories in the given path
-do not exist, Helm will attempt to create them as it goes. If the given
-destination exists and there are files in that directory, conflicting files
-will be overwritten, but other files will be left alone.
+'helm create' nimt eenen Pfad als Argument. Wan Verzeichnissen in dem jejewebenen Pfad
+nich existieren, werd Helm probäschen, seej to schöpen. Wan dat Ziel
+existiert un Datein in düssem Verzeichnis sünd, werden konfliktäschen Datein
+överschreewt, aber andrej Datein werden in Rohe jelaten.
 `
 
 type createOptions struct {
@@ -65,7 +65,7 @@ func newCreateCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "create NAME",
-		Short: "create a new chart with the given name",
+		Short: "schöpen Sie eene niee Chart met dem jejewebenen Namm",
 		Long:  createDesc,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, _ string) ([]string, cobra.ShellCompDirective) {
@@ -84,8 +84,8 @@ func newCreateCmd(out io.Writer) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&o.starter, "starter", "p", "", "the name or absolute path to Helm starter scaffold")
-	cmd.Flags().StringVar(&o.chartAPIVersion, "chart-api-version", chart.APIVersionV2, "chart API version to use (v2 or v3)")
+	cmd.Flags().StringVarP(&o.starter, "starter", "p", "", "de Namm oder absoluten Pfad to Helm-Starter-Gerüst")
+	cmd.Flags().StringVar(&o.chartAPIVersion, "chart-api-version", chart.APIVersionV2, "Chart-API-Versjon to bruken (v2 oder v3)")
 
 	if !gates.ChartV3.IsEnabled() {
 		cmd.Flags().MarkHidden("chart-api-version")
@@ -95,7 +95,7 @@ func newCreateCmd(out io.Writer) *cobra.Command {
 }
 
 func (o *createOptions) run(out io.Writer) error {
-	fmt.Fprintf(out, "Creating %s\n", o.name)
+	fmt.Fprintf(out, "Schöpe %s\n", o.name)
 
 	switch o.chartAPIVersion {
 	case chart.APIVersionV2, "":
@@ -106,7 +106,7 @@ func (o *createOptions) run(out io.Writer) error {
 		}
 		return o.createV3Chart(out)
 	default:
-		return fmt.Errorf("unsupported chart API version: %s (supported: v2, v3)", o.chartAPIVersion)
+		return fmt.Errorf("nich unnerstöttede Chart-API-Versjon: %s (unnerstöttet: v2, v3)", o.chartAPIVersion)
 	}
 }
 
@@ -114,7 +114,7 @@ func (o *createOptions) createV2Chart(out io.Writer) error {
 	chartname := filepath.Base(o.name)
 	cfile := &chart.Metadata{
 		Name:        chartname,
-		Description: "A Helm chart for Kubernetes",
+		Description: "Eene Helm-Chart för Kubernetes",
 		Type:        "application",
 		Version:     "0.1.0",
 		AppVersion:  "0.1.0",
@@ -140,7 +140,7 @@ func (o *createOptions) createV3Chart(out io.Writer) error {
 	chartname := filepath.Base(o.name)
 	cfile := &chartv3.Metadata{
 		Name:        chartname,
-		Description: "A Helm chart for Kubernetes",
+		Description: "Eene Helm-Chart för Kubernetes",
 		Type:        "application",
 		Version:     "0.1.0",
 		AppVersion:  "0.1.0",

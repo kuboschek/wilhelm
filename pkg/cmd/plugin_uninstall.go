@@ -38,7 +38,7 @@ func newPluginUninstallCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "uninstall <plugin>...",
 		Aliases: []string{"rm", "remove"},
-		Short:   "uninstall one or more Helm plugins",
+		Short:   "deinstalläschen Sie een oder mehrere Helm-Plugins",
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 			return compListPlugins(toComplete, args), cobra.ShellCompDirectiveNoFileComp
 		},
@@ -54,7 +54,7 @@ func newPluginUninstallCmd(out io.Writer) *cobra.Command {
 
 func (o *pluginUninstallOptions) complete(args []string) error {
 	if len(args) == 0 {
-		return errors.New("please provide plugin name to uninstall")
+		return errors.New("jewen Sie bitte eenen Plugin-Namm to deinstalläschen an")
 	}
 	o.names = args
 	return nil
@@ -70,12 +70,12 @@ func (o *pluginUninstallOptions) run(out io.Writer) error {
 	for _, name := range o.names {
 		if found := findPlugin(plugins, name); found != nil {
 			if err := uninstallPlugin(found); err != nil {
-				errorPlugins = append(errorPlugins, fmt.Errorf("failed to uninstall plugin %s, got error (%v)", name, err))
+				errorPlugins = append(errorPlugins, fmt.Errorf("fählte, Plugin %s to deinstalläschen, Fehler (%v) jekrejen", name, err))
 			} else {
-				fmt.Fprintf(out, "Uninstalled plugin: %s\n", name)
+				fmt.Fprintf(out, "Plugin deinstalliert: %s\n", name)
 			}
 		} else {
-			errorPlugins = append(errorPlugins, fmt.Errorf("plugin: %s not found", name))
+			errorPlugins = append(errorPlugins, fmt.Errorf("Plugin: %s nich jefunnen", name))
 		}
 	}
 	if len(errorPlugins) > 0 {

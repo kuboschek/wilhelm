@@ -28,10 +28,10 @@ import (
 )
 
 const pushDesc = `
-Upload a chart to a registry.
+Laden Sie eene Chart to eene Registry hoch.
 
-If the chart has an associated provenance file,
-it will also be uploaded.
+Wan de Chart eene jewerbundene Provenance-Datei hett,
+werd seej ook hochjeladen.
 `
 
 type registryPushOptions struct {
@@ -49,7 +49,7 @@ func newPushCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "push [chart] [remote]",
-		Short: "push a chart to remote",
+		Short: "puschen Sie eene Chart to Remote",
 		Long:  pushDesc,
 		Args:  require.MinimumNArgs(2),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, _ string) ([]string, cobra.ShellCompDirective) {
@@ -75,7 +75,7 @@ func newPushCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			)
 
 			if err != nil {
-				return fmt.Errorf("missing registry client: %w", err)
+				return fmt.Errorf("Registry-Client fehlt: %w", err)
 			}
 			cfg.RegistryClient = registryClient
 			chartRef := args[0]
@@ -96,13 +96,13 @@ func newPushCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.StringVar(&o.certFile, "cert-file", "", "identify registry client using this SSL certificate file")
-	f.StringVar(&o.keyFile, "key-file", "", "identify registry client using this SSL key file")
-	f.StringVar(&o.caFile, "ca-file", "", "verify certificates of HTTPS-enabled servers using this CA bundle")
-	f.BoolVar(&o.insecureSkipTLSVerify, "insecure-skip-tls-verify", false, "skip tls certificate checks for the chart upload")
-	f.BoolVar(&o.plainHTTP, "plain-http", false, "use insecure HTTP connections for the chart upload")
-	f.StringVar(&o.username, "username", "", "chart repository username where to locate the requested chart")
-	f.StringVar(&o.password, "password", "", "chart repository password where to locate the requested chart")
+	f.StringVar(&o.certFile, "cert-file", "", "identifijeren Sie Registry-Client met düsser SSL-Zertifikat-Datei")
+	f.StringVar(&o.keyFile, "key-file", "", "identifijeren Sie Registry-Client met düsser SSL-Slötel-Datei")
+	f.StringVar(&o.caFile, "ca-file", "", "verifijeren Sie Zertifikate von HTTPS-aktivierten Servern met düssem CA-Bundle")
+	f.BoolVar(&o.insecureSkipTLSVerify, "insecure-skip-tls-verify", false, "överspringen Sie TLS-Zertifikat-Prövungen för den Chart-Upload")
+	f.BoolVar(&o.plainHTTP, "plain-http", false, "bruken Sie unsichere HTTP-Verbindungen för den Chart-Upload")
+	f.StringVar(&o.username, "username", "", "Chart-Repository-Benutzername wo de anjefraede Chart to finnen es")
+	f.StringVar(&o.password, "password", "", "Chart-Repository-Passwort wo de anjefraede Chart to finnen es")
 
 	return cmd
 }

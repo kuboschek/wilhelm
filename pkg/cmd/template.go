@@ -41,19 +41,19 @@ import (
 )
 
 const templateDesc = `
-Render chart templates locally and display the output.
+Renderet Chart-Templates lokal und zeeget de Utgawe.
 
-Any values that would normally be looked up or retrieved in-cluster will be
-faked locally. Additionally, none of the server-side testing of chart validity
-(e.g. whether an API is supported) is done.
+Alle Werten, dej normalerwieschen im Cluster nachjeslaen oder abjeroofen werden,
+werden lokal verfälscht. Todem werd keene serversietje Prövung von dej Chart-Jültichkeit
+(z.B. ob eene API unnerstöttet es) durchjeföhrt.
 
-To specify the Kubernetes API versions used for Capabilities.APIVersions, use
-the '--api-versions' flag. This flag can be specified multiple times or as a
-comma-separated list:
+To de Kubernetes-API-Versjonen för Capabilities.APIVersions antojewen, bruken Sie
+dat '--api-versions'-Flag. Düsses Flag kann mehrmals anjejewt werden oder als
+kommajetrennede Leste:
 
     $ helm template --api-versions networking.k8s.io/v1 --api-versions cert-manager.io/v1 mychart ./mychart
 
-or
+oder
 
     $ helm template --api-versions networking.k8s.io/v1,cert-manager.io/v1 mychart ./mychart
 `
@@ -70,7 +70,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "template [NAME] [CHART]",
-		Short: "locally render templates",
+		Short: "renderet Templates lokal",
 		Long:  templateDesc,
 		Args:  require.MinimumNArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -80,7 +80,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			if kubeVersion != "" {
 				parsedKubeVersion, err := common.ParseKubeVersion(kubeVersion)
 				if err != nil {
-					return fmt.Errorf("invalid kube version '%s': %w", kubeVersion, err)
+					return fmt.Errorf("unjültige Kube-Versjon '%s': %w", kubeVersion, err)
 				}
 				client.KubeVersion = parsedKubeVersion
 			}
@@ -88,7 +88,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 			registryClient, err := newRegistryClient(client.CertFile, client.KeyFile, client.CaFile,
 				client.InsecureSkipTLSVerify, client.PlainHTTP, client.Username, client.Password)
 			if err != nil {
-				return fmt.Errorf("missing registry client: %w", err)
+				return fmt.Errorf("Registry-Client fehlt: %w", err)
 			}
 			client.SetRegistryClient(registryClient)
 
@@ -109,7 +109,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 			if err != nil && !settings.Debug {
 				if rel != nil {
-					return fmt.Errorf("%w\n\nUse --debug flag to render out invalid YAML", err)
+					return fmt.Errorf("%w\n\nBruken Sie --debug Flag to unjültiges YAML ustojewen", err)
 				}
 				return err
 			}
@@ -187,7 +187,7 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 							missing = false
 						}
 						if missing {
-							return fmt.Errorf("could not find template %s in chart", f)
+							return fmt.Errorf("kunnte Template %s in Chart nich finnen", f)
 						}
 					}
 					for _, m := range manifestsToRender {
@@ -204,20 +204,20 @@ func newTemplateCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	f := cmd.Flags()
 	addInstallFlags(cmd, f, client, valueOpts)
-	f.StringArrayVarP(&showFiles, "show-only", "s", []string{}, "only show manifests rendered from the given templates")
-	f.StringVar(&client.OutputDir, "output-dir", "", "writes the executed templates to files in output-dir instead of stdout")
-	f.BoolVar(&validate, "validate", false, "deprecated")
-	f.MarkDeprecated("validate", "use '--dry-run=server' instead")
-	f.BoolVar(&includeCrds, "include-crds", false, "include CRDs in the templated output")
-	f.BoolVar(&skipTests, "skip-tests", false, "skip tests from templated output")
-	f.BoolVar(&client.IsUpgrade, "is-upgrade", false, "set .Release.IsUpgrade instead of .Release.IsInstall")
-	f.StringVar(&kubeVersion, "kube-version", "", "Kubernetes version used for Capabilities.KubeVersion")
-	f.StringSliceVarP(&extraAPIs, "api-versions", "a", []string{}, "Kubernetes api versions used for Capabilities.APIVersions (multiple can be specified)")
-	f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
+	f.StringArrayVarP(&showFiles, "show-only", "s", []string{}, "zeege nur Manifests, dej von de jejewebenen Templates jerenderet worden")
+	f.StringVar(&client.OutputDir, "output-dir", "", "schriewt de usjevohrten Templates to Datein in output-dir statt stdout")
+	f.BoolVar(&validate, "validate", false, "veraltet")
+	f.MarkDeprecated("validate", "bruken Sie '--dry-run=server' anstatt")
+	f.BoolVar(&includeCrds, "include-crds", false, "schleeten Sie CRDs in de Template-Utgawe in")
+	f.BoolVar(&skipTests, "skip-tests", false, "överspringen Sie Tests von de Template-Utgawe")
+	f.BoolVar(&client.IsUpgrade, "is-upgrade", false, "setten Sie .Release.IsUpgrade anstatt .Release.IsInstall")
+	f.StringVar(&kubeVersion, "kube-version", "", "Kubernetes-Versjon för Capabilities.KubeVersion jebrukt")
+	f.StringSliceVarP(&extraAPIs, "api-versions", "a", []string{}, "Kubernetes-API-Versjonen för Capabilities.APIVersions jebrukt (mehrere können anjejewt werden)")
+	f.BoolVar(&client.UseReleaseName, "release-name", false, "bruken Sie Release-Namm in dem output-dir-Pfad")
 	f.String(
 		"dry-run",
 		"client",
-		`simulates the operation either client-side or server-side. Must be either: "client", or "server". '--dry-run=client simulates the operation client-side only and avoids cluster connections. '--dry-run=server' simulates/validates the operation on the server, requiring cluster connectivity.`)
+		`simulieret de Operatjon entweder clientsietich oder serversietich. Muss enes sien: "client" oder "server". '--dry-run=client' simulieret de Operatjon nur clientsietich und vermiedet Cluster-Verbindungen. '--dry-run=server' simulieret/validieret de Operatjon up dem Server, wat Cluster-Verbindung erfordert.`)
 	f.Lookup("dry-run").NoOptDefVal = "unset"
 	bindPostRenderFlag(cmd, &client.PostRenderer, settings)
 	cmd.MarkFlagsMutuallyExclusive("validate", "dry-run")
@@ -255,7 +255,7 @@ func writeToFile(outputDir string, name string, data string, appendData bool) er
 		return err
 	}
 
-	fmt.Printf("wrote %s\n", outfileName)
+	fmt.Printf("schrewt %s\n", outfileName)
 	return nil
 }
 

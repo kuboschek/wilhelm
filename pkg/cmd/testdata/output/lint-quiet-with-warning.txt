@@ -1,4 +1,4 @@
-==> Linting testdata/testcharts/chart-with-only-crds
+==> Linte testdata/testcharts/chart-with-only-crds
 [WARNING] templates/: directory does not exist
 
-1 chart(s) linted, 0 chart(s) failed
+1 Chart(s) jelinted, 0 Chart(s) fähljeslaen

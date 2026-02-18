@@ -47,21 +47,21 @@ type pluginInstallOptions struct {
 }
 
 const pluginInstallDesc = `
-This command allows you to install a plugin from a url to a VCS repo or a local path.
+Düssen Befehl erlaubt et Sei, een Plugin von eene URL to eene VCS-Repo oder eenen lokalen Pfad to installäschen.
 
-By default, plugin signatures are verified before installation when installing from
-tarballs (.tgz or .tar.gz). This requires a corresponding .prov file to be available
-alongside the tarball.
-For local development, plugins installed from local directories are automatically
-treated as "local dev" and do not require signatures.
-Use --verify=false to skip signature verification for remote plugins.
+Standardmäßich werden Plugin-Signaturen vör der Installatjon verifijert, wan von
+Tarballs (.tgz oder .tar.gz) installiert werd. Dütt erfordert, dat eene entsprechende .prov-Datei
+nebenbie dem Tarball verfögbar es.
+För lokale Entwicklung werden Plugins, dej von lokalen Verzeichnissen installiert werden, automatisch
+als "lokal dev" behandelt un bruken keene Signaturen.
+Bruken Sie --verify=false to Signatur-Verifikation för ferne Plugins to överspringen.
 `
 
 func newPluginInstallCmd(out io.Writer) *cobra.Command {
 	o := &pluginInstallOptions{}
 	cmd := &cobra.Command{
 		Use:     "install [options] <path|url>",
-		Short:   "install a Helm plugin",
+		Short:   "installäschen Sie een Helm-Plugin",
 		Long:    pluginInstallDesc,
 		Aliases: []string{"add"},
 		Args:    require.ExactArgs(1),
@@ -80,18 +80,18 @@ func newPluginInstallCmd(out io.Writer) *cobra.Command {
 			return o.run(out)
 		},
 	}
-	cmd.Flags().StringVar(&o.version, "version", "", "specify a version constraint. If this is not specified, the latest version is installed")
-	cmd.Flags().BoolVar(&o.verify, "verify", true, "verify the plugin signature before installing")
-	cmd.Flags().StringVar(&o.keyring, "keyring", defaultKeyring(), "location of public keys used for verification")
+	cmd.Flags().StringVar(&o.version, "version", "", "jewen Sie eene Versjonsbeschränkung an. Wan dütt nich anjejewt es, werd de nieste Versjon installiert")
+	cmd.Flags().BoolVar(&o.verify, "verify", true, "verifijeren Sie de Plugin-Signatur vör der Installatjon")
+	cmd.Flags().StringVar(&o.keyring, "keyring", defaultKeyring(), "Ort von öffentlichen Slötels för Verifikation jebrukt")
 
 	// Add OCI-specific flags
-	cmd.Flags().StringVar(&o.certFile, "cert-file", "", "identify registry client using this SSL certificate file")
-	cmd.Flags().StringVar(&o.keyFile, "key-file", "", "identify registry client using this SSL key file")
-	cmd.Flags().StringVar(&o.caFile, "ca-file", "", "verify certificates of HTTPS-enabled servers using this CA bundle")
-	cmd.Flags().BoolVar(&o.insecureSkipTLSVerify, "insecure-skip-tls-verify", false, "skip tls certificate checks for the plugin download")
-	cmd.Flags().BoolVar(&o.plainHTTP, "plain-http", false, "use insecure HTTP connections for the plugin download")
-	cmd.Flags().StringVar(&o.username, "username", "", "registry username")
-	cmd.Flags().StringVar(&o.password, "password", "", "registry password")
+	cmd.Flags().StringVar(&o.certFile, "cert-file", "", "identifijeren Sie Registry-Client met düsser SSL-Zertifikat-Datei")
+	cmd.Flags().StringVar(&o.keyFile, "key-file", "", "identifijeren Sie Registry-Client met düsser SSL-Slötel-Datei")
+	cmd.Flags().StringVar(&o.caFile, "ca-file", "", "verifijeren Sie Zertifikate von HTTPS-aktivierten Servern met düssem CA-Bundle")
+	cmd.Flags().BoolVar(&o.insecureSkipTLSVerify, "insecure-skip-tls-verify", false, "överspringen Sie TLS-Zertifikat-Prövungen för den Plugin-Download")
+	cmd.Flags().BoolVar(&o.plainHTTP, "plain-http", false, "bruken Sie unsichere HTTP-Verbindungen för den Plugin-Download")
+	cmd.Flags().StringVar(&o.username, "username", "", "Registry-Benutzername")
+	cmd.Flags().StringVar(&o.password, "password", "", "Registry-Passwort")
 	return cmd
 }
 
@@ -131,15 +131,15 @@ func (o *pluginInstallOptions) run(out io.Writer) error {
 	if localInst, ok := i.(*installer.LocalInstaller); ok && !localInst.SupportsVerification() {
 		// Local directory installations are allowed without verification
 		shouldVerify = false
-		fmt.Fprintf(out, "Installing plugin from local directory (development mode)\n")
+		fmt.Fprintf(out, "Installäsche Plugin von lokalen Verzeichnis (Entwicklungs-Modus)\n")
 	} else if shouldVerify {
 		// For remote installations, check if verification is supported
 		if verifier, ok := i.(installer.Verifier); !ok || !verifier.SupportsVerification() {
-			return fmt.Errorf("plugin source does not support verification. Use --verify=false to skip verification")
+			return fmt.Errorf("Plugin-Quell unnerstöttet keene Verifikation. Bruken Sie --verify=false to Verifikation to överspringen")
 		}
 	} else {
 		// User explicitly disabled verification
-		fmt.Fprintf(out, "WARNING: Skipping plugin signature verification\n")
+		fmt.Fprintf(out, "WARNUNG: Överspringen Plugin-Signatur-Verifikation\n")
 	}
 
 	// Set up installation options
@@ -150,7 +150,7 @@ func (o *pluginInstallOptions) run(out io.Writer) error {
 
 	// If verify is requested, show verification output
 	if shouldVerify {
-		fmt.Fprintf(out, "Verifying plugin signature...\n")
+		fmt.Fprintf(out, "Verifijere Plugin-Signatur...\n")
 	}
 
 	// Install the plugin with options
@@ -162,22 +162,22 @@ func (o *pluginInstallOptions) run(out io.Writer) error {
 	// If verification was successful, show the details
 	if verifyResult != nil {
 		for _, signer := range verifyResult.SignedBy {
-			fmt.Fprintf(out, "Signed by: %s\n", signer)
+			fmt.Fprintf(out, "Signiert von: %s\n", signer)
 		}
-		fmt.Fprintf(out, "Using Key With Fingerprint: %s\n", verifyResult.Fingerprint)
-		fmt.Fprintf(out, "Plugin Hash Verified: %s\n", verifyResult.FileHash)
+		fmt.Fprintf(out, "Bruken Slötel met Fingeraftruck: %s\n", verifyResult.Fingerprint)
+		fmt.Fprintf(out, "Plugin-Hash verifijert: %s\n", verifyResult.FileHash)
 	}
 
 	slog.Debug("loading plugin", "path", i.Path())
 	p, err := plugin.LoadDir(i.Path())
 	if err != nil {
-		return fmt.Errorf("plugin is installed but unusable: %w", err)
+		return fmt.Errorf("Plugin es installiert aber nich brukbar: %w", err)
 	}
 
 	if err := runHook(p, plugin.Install); err != nil {
 		return err
 	}
 
-	fmt.Fprintf(out, "Installed plugin: %s\n", p.Metadata().Name)
+	fmt.Fprintf(out, "Plugin installiert: %s\n", p.Metadata().Name)
 	return nil
 }

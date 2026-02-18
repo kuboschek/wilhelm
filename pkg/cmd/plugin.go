@@ -24,13 +24,13 @@ import (
 )
 
 const pluginHelp = `
-Manage client-side Helm plugins.
+Verwallen Sie clientsietje Helm-Plugins.
 `
 
 func newPluginCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "plugin",
-		Short: "install, list, or uninstall Helm plugins",
+		Short: "installäschen, listen oder deinstalläschen Sie Helm-Plugins",
 		Long:  pluginHelp,
 	}
 	cmd.AddCommand(

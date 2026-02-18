@@ -29,32 +29,32 @@ import (
 )
 
 const showDesc = `
-This command consists of multiple subcommands to display information about a chart
+Düssen Befehl bestäht us mehreren Unterbefehlen, to Informatsjonen över eene Chart antoseegen
 `
 
 const showAllDesc = `
-This command inspects a chart (directory, file, or URL) and displays all its content
+Düssen Befehl inspekjert eene Chart (Verzeichnis, Datei oder URL) un zeeget all sienen Inhalt
 (values.yaml, Chart.yaml, README)
 `
 
 const showValuesDesc = `
-This command inspects a chart (directory, file, or URL) and displays the contents
-of the values.yaml file
+Düssen Befehl inspekjert eene Chart (Verzeichnis, Datei oder URL) un zeeget den Inhalt
+von de values.yaml-Datei
 `
 
 const showChartDesc = `
-This command inspects a chart (directory, file, or URL) and displays the contents
-of the Chart.yaml file
+Düssen Befehl inspekjert eene Chart (Verzeichnis, Datei oder URL) un zeeget den Inhalt
+von de Chart.yaml-Datei
 `
 
 const readmeChartDesc = `
-This command inspects a chart (directory, file, or URL) and displays the contents
-of the README file
+Düssen Befehl inspekjert eene Chart (Verzeichnis, Datei oder URL) un zeeget den Inhalt
+von de README-Datei
 `
 
 const showCRDsDesc = `
-This command inspects a chart (directory, file, or URL) and displays the contents
-of the CustomResourceDefinition files
+Düssen Befehl inspekjert eene Chart (Verzeichnis, Datei oder URL) un zeeget den Inhalt
+von de CustomResourceDefinition-Datein
 `
 
 func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -62,7 +62,7 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	showCommand := &cobra.Command{
 		Use:     "show",
-		Short:   "show information of a chart",
+		Short:   "zeegen Sie Informatsjonen von eene Chart",
 		Aliases: []string{"inspect"},
 		Long:    showDesc,
 		Args:    require.NoArgs,
@@ -78,7 +78,7 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	all := &cobra.Command{
 		Use:               "all [CHART]",
-		Short:             "show all information of the chart",
+		Short:             "zeegen Sie alle Informatsjonen von de Chart",
 		Long:              showAllDesc,
 		Args:              require.ExactArgs(1),
 		ValidArgsFunction: validArgsFunc,
@@ -99,7 +99,7 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	valuesSubCmd := &cobra.Command{
 		Use:               "values [CHART]",
-		Short:             "show the chart's values",
+		Short:             "zeegen Sie de Werten von de Chart",
 		Long:              showValuesDesc,
 		Args:              require.ExactArgs(1),
 		ValidArgsFunction: validArgsFunc,
@@ -120,7 +120,7 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	chartSubCmd := &cobra.Command{
 		Use:               "chart [CHART]",
-		Short:             "show the chart's definition",
+		Short:             "zeegen Sie de Definition von de Chart",
 		Long:              showChartDesc,
 		Args:              require.ExactArgs(1),
 		ValidArgsFunction: validArgsFunc,
@@ -141,7 +141,7 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	readmeSubCmd := &cobra.Command{
 		Use:               "readme [CHART]",
-		Short:             "show the chart's README",
+		Short:             "zeegen Sie de README von de Chart",
 		Long:              readmeChartDesc,
 		Args:              require.ExactArgs(1),
 		ValidArgsFunction: validArgsFunc,
@@ -162,7 +162,7 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	crdsSubCmd := &cobra.Command{
 		Use:               "crds [CHART]",
-		Short:             "show the chart's CRDs",
+		Short:             "zeegen Sie de CRDs von de Chart",
 		Long:              showCRDsDesc,
 		Args:              require.ExactArgs(1),
 		ValidArgsFunction: validArgsFunc,
@@ -193,9 +193,9 @@ func newShowCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 func addShowFlags(subCmd *cobra.Command, client *action.Show) {
 	f := subCmd.Flags()
 
-	f.BoolVar(&client.Devel, "devel", false, "use development versions, too. Equivalent to version '>0.0.0-0'. If --version is set, this is ignored")
+	f.BoolVar(&client.Devel, "devel", false, "bruken Sie ook Entwicklungsversjonen. Entspricht Versjon '>0.0.0-0'. Wan --version jesett es, werd dütt ijgnoriert")
 	if subCmd.Name() == "values" {
-		f.StringVar(&client.JSONPathTemplate, "jsonpath", "", "supply a JSONPath expression to filter the output")
+		f.StringVar(&client.JSONPathTemplate, "jsonpath", "", "jewen Sie eenen JSONPath-Usdruck to de Utgawe to filteren")
 	}
 	addChartPathOptionsFlags(f, &client.ChartPathOptions)
 
@@ -229,7 +229,7 @@ func addRegistryClient(client *action.Show) error {
 	registryClient, err := newRegistryClient(client.CertFile, client.KeyFile, client.CaFile,
 		client.InsecureSkipTLSVerify, client.PlainHTTP, client.Username, client.Password)
 	if err != nil {
-		return fmt.Errorf("missing registry client: %w", err)
+		return fmt.Errorf("Registry-Client fehlt: %w", err)
 	}
 	client.SetRegistryClient(registryClient)
 	return nil
