@@ -39,16 +39,16 @@ import (
 
 // NOTE: Keep the list of statuses up-to-date with pkg/release/status.go.
 var statusHelp = `
-This command shows the status of a named release.
-The status consists of:
-- last deployment time
-- k8s namespace in which the release lives
-- state of the release (can be: unknown, deployed, uninstalled, superseded, failed, uninstalling, pending-install, pending-upgrade or pending-rollback)
-- revision of the release
-- description of the release (can be completion message or error message)
-- list of resources that this release consists of
-- details on last test suite run, if applicable
-- additional notes provided by the chart
+Dieser Befehl zeijt den Status eener benannten Freigabe.
+Der Status besteht aus:
+- letzter Bereitstellungszeitpunkt
+- k8s Namensraum, in dem die Freigabe lebt
+- Status der Freigabe (kann sein: unknown, deployed, uninstalled, superseded, failed, uninstalling, pending-install, pending-upgrade oder pending-rollback)
+- Revision der Freigabe
+- Beschreibung der Freigabe (kann Abschlussmeldung oder Fehlermeldung sein)
+- Liste der Ressourcen, aus denen diese Freigabe besteht
+- Details zur letzten Testsuite-Ausführung, falls zutreffend
+- zusätzliche Hinweise vom Chart
 `
 
 func newStatusCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
@@ -57,7 +57,7 @@ func newStatusCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "status RELEASE_NAME",
-		Short: "display the status of the named release",
+		Short: "zeije den Status der benannten Freigabe",
 		Long:  statusHelp,
 		Args:  require.ExactArgs(1),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
@@ -97,7 +97,7 @@ func newStatusCmd(cfg *action.Configuration, out io.Writer) *cobra.Command {
 
 	f := cmd.Flags()
 
-	f.IntVar(&client.Version, "revision", 0, "if set, display the status of the named release with revision")
+	f.IntVar(&client.Version, "revision", 0, "wenn jesetzt, zeije den Status der benannten Freigabe mit Revision")
 
 	err := cmd.RegisterFlagCompletionFunc("revision", func(_ *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		if len(args) == 1 {
@@ -176,7 +176,7 @@ func (s statusPrinter) WriteTable(out io.Writer) error {
 			vk := rel.Info.Resources[t]
 			for _, resource := range vk {
 				if err := printer.PrintObj(resource, buf); err != nil {
-					_, _ = fmt.Fprintf(buf, "failed to print object type %s: %v\n", t, err)
+					_, _ = fmt.Fprintf(buf, "Fehler beim Drucken des Objekttyps %s: %v\n", t, err)
 				}
 			}
 
@@ -188,7 +188,7 @@ func (s statusPrinter) WriteTable(out io.Writer) error {
 
 	executions := executionsByHookEvent(rel)
 	if tests, ok := executions[releasev1.HookTest]; !ok || len(tests) == 0 {
-		_, _ = fmt.Fprintln(out, "TEST SUITE: None")
+		_, _ = fmt.Fprintln(out, "TEST SUITE: Keine")
 	} else {
 		for _, h := range tests {
 			// Don't print anything if hook has not been initiated
@@ -197,15 +197,15 @@ func (s statusPrinter) WriteTable(out io.Writer) error {
 			}
 			_, _ = fmt.Fprintf(out, "TEST SUITE:     %s\n%s\n%s\n%s\n",
 				h.Name,
-				fmt.Sprintf("Last Started:   %s", h.LastRun.StartedAt.Format(time.ANSIC)),
-				fmt.Sprintf("Last Completed: %s", h.LastRun.CompletedAt.Format(time.ANSIC)),
-				fmt.Sprintf("Phase:          %s", h.LastRun.Phase),
+				fmt.Sprintf("Zuletzt jestartet:     %s", h.LastRun.StartedAt.Format(time.ANSIC)),
+				fmt.Sprintf("Zuletzt abgeschlossen: %s", h.LastRun.CompletedAt.Format(time.ANSIC)),
+				fmt.Sprintf("Phase:                 %s", h.LastRun.Phase),
 			)
 		}
 	}
 
 	if s.debug {
-		_, _ = fmt.Fprintln(out, "USER-SUPPLIED VALUES:")
+		_, _ = fmt.Fprintln(out, "VOM BENUTZER ANJEGEBENE WERTE:")
 		err := output.EncodeYAML(out, rel.Config)
 		if err != nil {
 			return err
@@ -218,7 +218,7 @@ func (s statusPrinter) WriteTable(out io.Writer) error {
 			return err
 		}
 
-		_, _ = fmt.Fprintln(out, "COMPUTED VALUES:")
+		_, _ = fmt.Fprintln(out, "BERECHNETE WERTE:")
 		err = output.EncodeYAML(out, cfg.AsMap())
 		if err != nil {
 			return err

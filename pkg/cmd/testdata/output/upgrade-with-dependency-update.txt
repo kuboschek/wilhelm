@@ -5,6 +5,6 @@ NAMESPACE: default
 STATUS: deployed
 REVISION: 3
 DESCRIPTION: Upgrade complete
-TEST SUITE: None
+TEST SUITE: Keine
 NOTES:
 PARENT NOTES

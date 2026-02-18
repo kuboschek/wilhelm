@@ -5,4 +5,4 @@ NAMESPACE: default
 STATUS: deployed
 REVISION: 3
 DESCRIPTION: Install complete
-TEST SUITE: None
+TEST SUITE: Keine

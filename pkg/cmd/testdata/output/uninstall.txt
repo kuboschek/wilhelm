@@ -1,1 +1,1 @@
-release "aeneas" uninstalled
+Freigabe "aeneas" deinstalliert

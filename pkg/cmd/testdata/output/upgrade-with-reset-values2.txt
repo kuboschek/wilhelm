@@ -5,4 +5,4 @@ NAMESPACE: default
 STATUS: deployed
 REVISION: 6
 DESCRIPTION: Upgrade complete
-TEST SUITE: None
+TEST SUITE: Keine
