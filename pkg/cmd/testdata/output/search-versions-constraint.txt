@@ -1,2 +1,2 @@
-NAME          	CHART VERSION	APP VERSION	DESCRIPTION                    
+NAAME         	CHART-VERSION	APP-VERSION	BESCHRIEWUNG                   
 testing/alpine	0.1.0        	1.2.3      	Deploy a basic Alpine Linux pod

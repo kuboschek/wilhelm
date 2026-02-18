@@ -68,7 +68,7 @@ func newRepoAddCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "add [NAME] [URL]",
-		Short: "add a chart repository",
+		Short: "een Chart-Repository addieren",
 		Args:  require.ExactArgs(2),
 		ValidArgsFunction: func(_ *cobra.Command, args []string, _ string) ([]string, cobra.ShellCompDirective) {
 			if len(args) > 1 {
@@ -87,17 +87,17 @@ func newRepoAddCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.StringVar(&o.username, "username", "", "chart repository username")
-	f.StringVar(&o.password, "password", "", "chart repository password")
-	f.BoolVarP(&o.passwordFromStdinOpt, "password-stdin", "", false, "read chart repository password from stdin")
-	f.BoolVar(&o.forceUpdate, "force-update", false, "replace (overwrite) the repo if it already exists")
-	f.StringVar(&o.certFile, "cert-file", "", "identify HTTPS client using this SSL certificate file")
-	f.StringVar(&o.keyFile, "key-file", "", "identify HTTPS client using this SSL key file")
-	f.StringVar(&o.caFile, "ca-file", "", "verify certificates of HTTPS-enabled servers using this CA bundle")
-	f.BoolVar(&o.insecureSkipTLSVerify, "insecure-skip-tls-verify", false, "skip tls certificate checks for the repository")
-	f.BoolVar(&o.allowDeprecatedRepos, "allow-deprecated-repos", false, "by default, this command will not allow adding official repos that have been permanently deleted. This disables that behavior")
-	f.BoolVar(&o.passCredentialsAll, "pass-credentials", false, "pass credentials to all domains")
-	f.DurationVar(&o.timeout, "timeout", getter.DefaultHTTPTimeout*time.Second, "time to wait for the index file download to complete")
+	f.StringVar(&o.username, "username", "", "Chart-Repository Benutzernaame")
+	f.StringVar(&o.password, "password", "", "Chart-Repository Passwort")
+	f.BoolVarP(&o.passwordFromStdinOpt, "password-stdin", "", false, "Chart-Repository Passwort vun stdin lesen")
+	f.BoolVar(&o.forceUpdate, "force-update", false, "dat Repository ersetzen (överschriewen), wenn et al existiert")
+	f.StringVar(&o.certFile, "cert-file", "", "HTTPS-Client met düsse SSL-Zertifikatdatei identifizieren")
+	f.StringVar(&o.keyFile, "key-file", "", "HTTPS-Client met düsse SSL-Slöteldatei identifizieren")
+	f.StringVar(&o.caFile, "ca-file", "", "Zertifikate vun HTTPS-aktiefde Servers met düsse CA-Bündel verifizieren")
+	f.BoolVar(&o.insecureSkipTLSVerify, "insecure-skip-tls-verify", false, "TLS-Zertifikatpröövungen för dütt Repository överspringen")
+	f.BoolVar(&o.allowDeprecatedRepos, "allow-deprecated-repos", false, "standardmäßig erlaubt dütt Kommando nich, offizielle Repositories to addieren, de permanent je-löscht sind. Dütt deaktiviert dütt Verhalten")
+	f.BoolVar(&o.passCredentialsAll, "pass-credentials", false, "Anmeldedaten an alle Domänen wiederjewen")
+	f.DurationVar(&o.timeout, "timeout", getter.DefaultHTTPTimeout*time.Second, "Tiet, de up den Download vun de Indexdatei to wachten is")
 
 	return cmd
 }
@@ -107,7 +107,7 @@ func (o *repoAddOptions) run(out io.Writer) error {
 	if !o.allowDeprecatedRepos {
 		for oldURL, newURL := range deprecatedRepos {
 			if strings.Contains(o.url, oldURL) {
-				return fmt.Errorf("repo %q is no longer available; try %q instead", o.url, newURL)
+				return fmt.Errorf("Repository %q is nich mehr verfögbar; versöök %q stattdessen", o.url, newURL)
 			}
 		}
 	}
@@ -158,7 +158,7 @@ func (o *repoAddOptions) run(out io.Writer) error {
 			o.password = password
 		} else {
 			fd := int(os.Stdin.Fd())
-			fmt.Fprint(out, "Password: ")
+			fmt.Fprint(out, "Passwort: ")
 			password, err := term.ReadPassword(fd)
 			fmt.Fprintln(out)
 			if err != nil {
@@ -182,7 +182,7 @@ func (o *repoAddOptions) run(out io.Writer) error {
 
 	// Check if the repo name is legal
 	if strings.Contains(o.name, "/") {
-		return fmt.Errorf("repository name (%s) contains '/', please specify a different name without '/'", o.name)
+		return fmt.Errorf("Repository-Naame (%s) enthält '/', bitte jeef eenen annern Naame ohne '/' an", o.name)
 	}
 
 	// If the repo exists do one of two things:
@@ -193,11 +193,11 @@ func (o *repoAddOptions) run(out io.Writer) error {
 		if c != *existing {
 			// The input coming in for the name is different from what is already
 			// configured. Return an error.
-			return fmt.Errorf("repository name (%s) already exists, please specify a different name", o.name)
+			return fmt.Errorf("Repository-Naame (%s) existiert al, bitte jeef eenen annern Naame an", o.name)
 		}
 
 		// The add is idempotent so do nothing
-		fmt.Fprintf(out, "%q already exists with the same configuration, skipping\n", o.name)
+		fmt.Fprintf(out, "%q existiert al met de sülwige Konfiguration, öwerspringen\n", o.name)
 		return nil
 	}
 
@@ -210,7 +210,7 @@ func (o *repoAddOptions) run(out io.Writer) error {
 		r.CachePath = o.repoCache
 	}
 	if _, err := r.DownloadIndexFile(); err != nil {
-		return fmt.Errorf("looks like %q is not a valid chart repository or cannot be reached: %w", o.url, err)
+		return fmt.Errorf("et süht so ut, als wenn %q keen gültiget Chart-Repository is oder nich erreicht warden kann: %w", o.url, err)
 	}
 
 	f.Update(&c)
@@ -218,6 +218,6 @@ func (o *repoAddOptions) run(out io.Writer) error {
 	if err := f.WriteFile(o.repoFile, 0o600); err != nil {
 		return err
 	}
-	fmt.Fprintf(out, "%q has been added to your repositories\n", o.name)
+	fmt.Fprintf(out, "%q is to jue Repositories je-addiert warden\n", o.name)
 	return nil
 }

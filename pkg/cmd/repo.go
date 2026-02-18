@@ -27,15 +27,15 @@ import (
 )
 
 var repoHelm = `
-This command consists of multiple subcommands to interact with chart repositories.
+Dütt Kommando besteiht ut mehrere Subkommandos, öm met Chart-Repositories to interagieren.
 
-It can be used to add, remove, list, and index chart repositories.
+Et kann je-bruukt warden, öm Chart-Repositories to addieren, to entfernen, oplisten un to indizieren.
 `
 
 func newRepoCmd(out io.Writer) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "repo add|remove|list|index|update [ARGS]",
-		Short: "add, list, remove, update, and index chart repositories",
+		Short: "Chart-Repositories addieren, oplisten, entfernen, updaten un indizieren",
 		Long:  repoHelm,
 		Args:  require.NoArgs,
 	}

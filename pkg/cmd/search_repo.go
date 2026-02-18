@@ -38,26 +38,26 @@ import (
 )
 
 const searchRepoDesc = `
-Search reads through all of the repositories configured on the system, and
-looks for matches. Search of these repositories uses the metadata stored on
-the system.
+Search lest dörch alle Repositories, de up dat System je-konfiguriert sind, un
+sökt na Övereenstimmungen. Söök in düsse Repositories bruukt de Metadaten, de up
+dat System je-spieckerd sind.
 
-It will display the latest stable versions of the charts found. If you
-specify the --devel flag, the output will include pre-release versions.
-If you want to search using a version constraint, use --version.
+Et ward de nieuwesten stabilen Versionen vun de je-funnenen Charts anzeigen. Wenn jie
+de --devel-Flagge angift, ward de Utgawe Vör-Freigabe-Versionen enthalten.
+Wenn jie met eener Versionsbeschränkung söken wöllt, bruukt --version.
 
-Examples:
+Beispiele:
 
-    # Search for stable release versions matching the keyword "nginx"
+    # Söök na stabilen Freigabe-Versionen, de to den Sökbegriff "nginx" passen
     $ helm search repo nginx
 
-    # Search for release versions matching the keyword "nginx", including pre-release versions
+    # Söök na Freigabe-Versionen, de to den Sökbegriff "nginx" passen, inklusiv Vör-Freigabe-Versionen
     $ helm search repo nginx --devel
 
-    # Search for the latest stable release for nginx-ingress with a major version of 1
+    # Söök na de nieuweste stabile Freigabe för nginx-ingress met eener Hauptversion vun 1
     $ helm search repo nginx-ingress --version ^1.0.0
 
-Repositories are managed with 'helm repo' commands.
+Repositories warden met 'helm repo'-Kommandos je-verwalt.
 `
 
 // searchMaxScore suggests that any score higher than this is not considered a match.
@@ -80,7 +80,7 @@ func newSearchRepoCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "repo [keyword]",
-		Short: "search repositories for a keyword in charts",
+		Short: "Repositories na eenen Sökbegriff in Charts söken",
 		Long:  searchRepoDesc,
 		RunE: func(_ *cobra.Command, args []string) error {
 			o.repoFile = settings.RepositoryConfig
@@ -90,12 +90,12 @@ func newSearchRepoCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.BoolVarP(&o.regexp, "regexp", "r", false, "use regular expressions for searching repositories you have added")
-	f.BoolVarP(&o.versions, "versions", "l", false, "show the long listing, with each version of each chart on its own line, for repositories you have added")
-	f.BoolVar(&o.devel, "devel", false, "use development versions (alpha, beta, and release candidate releases), too. Equivalent to version '>0.0.0-0'. If --version is set, this is ignored")
-	f.StringVar(&o.version, "version", "", "search using semantic versioning constraints on repositories you have added")
-	f.UintVar(&o.maxColWidth, "max-col-width", 50, "maximum column width for output table")
-	f.BoolVar(&o.failOnNoResult, "fail-on-no-result", false, "search fails if no results are found")
+	f.BoolVarP(&o.regexp, "regexp", "r", false, "reguläre Utsdrücke för Söök in Repositories je-bruuken, de jie je-addiert hemm")
+	f.BoolVarP(&o.versions, "versions", "l", false, "lange Oplistung anzeigen, met jeder Version vun jedem Chart up eener eigenen Zeile, för Repositories, de jie je-addiert hemm")
+	f.BoolVar(&o.devel, "devel", false, "Entwicklungsversionen (Alpha, Beta un Release-Candidate-Freigaben) ook bruuken. Entspricht Version '>0.0.0-0'. Wenn --version je-sett is, ward dütt ignoriert")
+	f.StringVar(&o.version, "version", "", "Söök met semantischen Versionsbeschränkungen in Repositories, de jie je-addiert hemm")
+	f.UintVar(&o.maxColWidth, "max-col-width", 50, "maximale Spaltenbreedte för Utgawetabell")
+	f.BoolVar(&o.failOnNoResult, "fail-on-no-result", false, "Söök feilt, wenn keene Resultate je-funnen warden")
 
 	bindOutputFlag(cmd, &o.outputFormat)
 
@@ -153,7 +153,7 @@ func (o *searchRepoOptions) applyConstraint(res []*search.Result) ([]*search.Res
 
 	constraint, err := semver.NewConstraint(o.version)
 	if err != nil {
-		return res, fmt.Errorf("an invalid version/constraint format: %w", err)
+		return res, fmt.Errorf("een ungültiges Versions-/Beschränkungsformat: %w", err)
 	}
 
 	data := res[:0]
@@ -181,7 +181,7 @@ func (o *searchRepoOptions) buildIndex() (*search.Index, error) {
 	// Load the repositories.yaml
 	rf, err := repo.LoadFile(o.repoFile)
 	if isNotExist(err) || len(rf.Repositories) == 0 {
-		return nil, errors.New("no repositories configured")
+		return nil, errors.New("keene Repositories je-konfiguriert")
 	}
 
 	i := search.NewIndex()
@@ -216,18 +216,18 @@ func (r *repoSearchWriter) WriteTable(out io.Writer) error {
 	if len(r.results) == 0 {
 		// Fail if no results found and --fail-on-no-result is enabled
 		if r.failOnNoResult {
-			return fmt.Errorf("no results found")
+			return fmt.Errorf("keene Resultate je-funnen")
 		}
 
-		_, err := out.Write([]byte("No results found\n"))
+		_, err := out.Write([]byte("Keene Resultate je-funnen\n"))
 		if err != nil {
-			return fmt.Errorf("unable to write results: %s", err)
+			return fmt.Errorf("kann Resultate nich schriewen: %s", err)
 		}
 		return nil
 	}
 	table := uitable.New()
 	table.MaxColWidth = r.columnWidth
-	table.AddRow("NAME", "CHART VERSION", "APP VERSION", "DESCRIPTION")
+	table.AddRow("NAAME", "CHART-VERSION", "APP-VERSION", "BESCHRIEWUNG")
 	for _, r := range r.results {
 		table.AddRow(r.Name, r.Chart.Version, r.Chart.AppVersion, r.Chart.Description)
 	}
@@ -245,7 +245,7 @@ func (r *repoSearchWriter) WriteYAML(out io.Writer) error {
 func (r *repoSearchWriter) encodeByFormat(out io.Writer, format output.Format) error {
 	// Fail if no results found and --fail-on-no-result is enabled
 	if len(r.results) == 0 && r.failOnNoResult {
-		return fmt.Errorf("no results found")
+		return fmt.Errorf("keene Resultate je-funnen")
 	}
 
 	// Initialize the array so no results returns an empty array instead of null

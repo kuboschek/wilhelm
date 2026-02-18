@@ -30,23 +30,22 @@ import (
 )
 
 const searchHubDesc = `
-Search for Helm charts in the Artifact Hub or your own hub instance.
+Söök na Helm-Charts in de Artifact Hub oder jue eigene Hub-Instanz.
 
-Artifact Hub is a web-based application that enables finding, installing, and
-publishing packages and configurations for CNCF projects, including publicly
-available distributed charts Helm charts. It is a Cloud Native Computing
-Foundation sandbox project. You can browse the hub at https://artifacthub.io/
+Artifact Hub is eene webbasierte Anwendung, de et möglich macht, Packete un Konfiguratschonen
+för CNCF-Projekte to finnen, to installieren un to publizieren, inklusiv öffentlich verfögbare
+verteilte Charts Helm-Charts. Et is een Cloud Native Computing Foundation Sandbox-Projekt.
+Jie könnt de Hub dorchsöken ünner https://artifacthub.io/
 
-The [KEYWORD] argument accepts either a keyword string, or quoted string of rich
-query options. For rich query options documentation, see
+Dat [KEYWORD]-Argument akzeptiert entweder eenen Sökbegriffsstring oder eenen zitierten String
+met rich query options. För de Dokumentatschon vun rich query options, söök ünner
 https://artifacthub.github.io/hub/api/?urls.primaryName=Monocular%20compatible%20search%20API#/Monocular/get_api_chartsvc_v1_charts_search
 
-Previous versions of Helm used an instance of Monocular as the default
-'endpoint', so for backwards compatibility Artifact Hub is compatible with the
-Monocular search API. Similarly, when setting the 'endpoint' flag, the specified
-endpoint must also be implement a Monocular compatible search API endpoint.
-Note that when specifying a Monocular instance as the 'endpoint', rich queries
-are not supported. For API details, see https://github.com/helm/monocular
+Fröhere Versionen vun Helm hemm eene Instanz vun Monocular als standard 'endpoint' je-bruukt,
+daröm is Artifact Hub för Rückwärtskompatibilität met de Monocular-Sök-API kompatibel.
+Ebenso mutt, wenn de 'endpoint'-Flagge je-sett ward, de angeben Endpoint ook eenen Monocular-
+kompatiblen Sök-API-Endpoint implementieren. Merkt, dat wenn een Monocular-Instanz als 'endpoint'
+angeben ward, rich queries nich ünnerstitzt warden. För API-Details, söök ünner https://github.com/helm/monocular
 `
 
 type searchHubOptions struct {
@@ -62,7 +61,7 @@ func newSearchHubCmd(out io.Writer) *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "hub [KEYWORD]",
-		Short: "search for charts in the Artifact Hub or your own hub instance",
+		Short: "na Charts in de Artifact Hub oder jue eigene Hub-Instanz söken",
 		Long:  searchHubDesc,
 		RunE: func(_ *cobra.Command, args []string) error {
 			return o.run(out, args)
@@ -70,10 +69,10 @@ func newSearchHubCmd(out io.Writer) *cobra.Command {
 	}
 
 	f := cmd.Flags()
-	f.StringVar(&o.searchEndpoint, "endpoint", "https://hub.helm.sh", "Hub instance to query for charts")
-	f.UintVar(&o.maxColWidth, "max-col-width", 50, "maximum column width for output table")
-	f.BoolVar(&o.listRepoURL, "list-repo-url", false, "print charts repository URL")
-	f.BoolVar(&o.failOnNoResult, "fail-on-no-result", false, "search fails if no results are found")
+	f.StringVar(&o.searchEndpoint, "endpoint", "https://hub.helm.sh", "Hub-Instanz, de na Charts je-fraagt ward")
+	f.UintVar(&o.maxColWidth, "max-col-width", 50, "maximale Spaltenbreedte för Utgawetabell")
+	f.BoolVar(&o.listRepoURL, "list-repo-url", false, "Chart-Repository-URL utjewen")
+	f.BoolVar(&o.failOnNoResult, "fail-on-no-result", false, "Söök feilt, wenn keene Resultate je-funnen warden")
 
 	bindOutputFlag(cmd, &o.outputFormat)
 
@@ -83,14 +82,14 @@ func newSearchHubCmd(out io.Writer) *cobra.Command {
 func (o *searchHubOptions) run(out io.Writer, args []string) error {
 	c, err := monocular.New(o.searchEndpoint)
 	if err != nil {
-		return fmt.Errorf("unable to create connection to %q: %w", o.searchEndpoint, err)
+		return fmt.Errorf("kann keene Verbindung to %q herstellen: %w", o.searchEndpoint, err)
 	}
 
 	q := strings.Join(args, " ")
 	results, err := c.Search(q)
 	if err != nil {
 		slog.Debug("search failed", slog.Any("error", err))
-		return fmt.Errorf("unable to perform search against %q", o.searchEndpoint)
+		return fmt.Errorf("kann keene Söök jegen %q durchföhren", o.searchEndpoint)
 	}
 
 	return o.outputFormat.Write(out, newHubSearchWriter(results, o.searchEndpoint, o.maxColWidth, o.listRepoURL, o.failOnNoResult))
@@ -136,12 +135,12 @@ func (h *hubSearchWriter) WriteTable(out io.Writer) error {
 	if len(h.elements) == 0 {
 		// Fail if no results found and --fail-on-no-result is enabled
 		if h.failOnNoResult {
-			return fmt.Errorf("no results found")
+			return fmt.Errorf("keene Resultate je-funnen")
 		}
 
-		_, err := out.Write([]byte("No results found\n"))
+		_, err := out.Write([]byte("Keene Resultate je-funnen\n"))
 		if err != nil {
-			return fmt.Errorf("unable to write results: %s", err)
+			return fmt.Errorf("kann Resultate nich schriewen: %s", err)
 		}
 		return nil
 	}
@@ -149,9 +148,9 @@ func (h *hubSearchWriter) WriteTable(out io.Writer) error {
 	table.MaxColWidth = h.columnWidth
 
 	if h.listRepoURL {
-		table.AddRow("URL", "CHART VERSION", "APP VERSION", "DESCRIPTION", "REPO URL")
+		table.AddRow("URL", "CHART-VERSION", "APP-VERSION", "BESCHRIEWUNG", "REPO-URL")
 	} else {
-		table.AddRow("URL", "CHART VERSION", "APP VERSION", "DESCRIPTION")
+		table.AddRow("URL", "CHART-VERSION", "APP-VERSION", "BESCHRIEWUNG")
 	}
 
 	for _, r := range h.elements {
@@ -175,7 +174,7 @@ func (h *hubSearchWriter) WriteYAML(out io.Writer) error {
 func (h *hubSearchWriter) encodeByFormat(out io.Writer, format output.Format) error {
 	// Fail if no results found and --fail-on-no-result is enabled
 	if len(h.elements) == 0 && h.failOnNoResult {
-		return fmt.Errorf("no results found")
+		return fmt.Errorf("keene Resultate je-funnen")
 	}
 
 	// Initialize the array so no results returns an empty array instead of null

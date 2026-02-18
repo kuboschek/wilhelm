@@ -70,7 +70,7 @@ func TestRepoRemove(t *testing.T) {
 	if err := rmOpts.run(b); err != nil {
 		t.Errorf("Error removing %s from repositories", testRepoName)
 	}
-	if !strings.Contains(b.String(), "has been removed") {
+	if !strings.Contains(b.String(), "je-entfernt warden") {
 		t.Errorf("Unexpected output: %s", b.String())
 	}
 
@@ -122,7 +122,7 @@ func TestRepoRemove(t *testing.T) {
 	}
 
 	// Check that stuff were removed
-	if !strings.Contains(b.String(), "has been removed") {
+	if !strings.Contains(b.String(), "je-entfernt warden") {
 		t.Errorf("Unexpected output: %s", b.String())
 	}
 
