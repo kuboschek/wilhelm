@@ -7,7 +7,8 @@ on:
     branches:
       - main
 
-permissions: read-all
+permissions:
+  contents: write
 
 # Note the only differences between release and canary-release jobs are:
 # - only canary passes --overwrite flag
@@ -16,8 +17,8 @@ permissions: read-all
 #   job is triggered by a tag push, VERSION should be the tag ref.
 jobs:
   release:
-    if: startsWith(github.ref, 'refs/tags/v') && github.repository == 'helm/helm'
-    runs-on: ubuntu-latest-16-cores
+    if: startsWith(github.ref, 'refs/tags/v') && github.repository == 'kuboschek/wilhelm'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
@@ -58,31 +59,18 @@ jobs:
           echo "${LATEST_VERSION}" > _dist_versions/helm-latest-version
           echo "${LATEST_VERSION}" > _dist_versions/helm4-latest-version
 
-      - name: Upload Binaries
-        uses: bacongobbler/azure-blob-storage-upload@50f7d898b7697e864130ea04c303ca38b5751c50 # pin@3.0.0
-        env:
-          AZURE_STORAGE_CONNECTION_STRING: "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
-          AZURE_STORAGE_CONTAINER_NAME: "${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}"
+      - name: Upload Binaries to Release
+        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # pin@v2.2.0
         with:
-          source_dir: _dist
-          container_name: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
-          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          extra_args: '--pattern helm-*'
-
-      - name: Upload Version tag files
-        uses: bacongobbler/azure-blob-storage-upload@50f7d898b7697e864130ea04c303ca38b5751c50 # pin@3.0.0
+          files: |
+            _dist/helm-*
+            _dist_versions/*
         env:
-          AZURE_STORAGE_CONNECTION_STRING: "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}"
-          AZURE_STORAGE_CONTAINER_NAME: "${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}"
-        with:
-          overwrite: 'true'
-          source_dir: _dist_versions
-          container_name: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
-          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   canary-release:
-    runs-on: ubuntu-latest-16-cores
-    if: github.ref == 'refs/heads/main' && github.repository == 'helm/helm'
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.repository == 'kuboschek/wilhelm'
     steps:
       - name: Checkout source code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # pin@v6.0.2
@@ -104,12 +92,9 @@ jobs:
           make build-cross
           make dist checksum VERSION="canary"
 
-      - name: Upload Binaries
-        uses: bacongobbler/azure-blob-storage-upload@50f7d898b7697e864130ea04c303ca38b5751c50 # pin@3.0.0
+      - name: Upload Canary Binaries
+        uses: actions/upload-artifact@ea165f8d65b6d78b1f3f572cea7eb6d42c1c2e12 # pin@v4.6.2
         with:
-          source_dir: _dist
-          container_name: ${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
-          connection_string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-          extra_args: '--pattern helm-*'
-          # WARNING: this will overwrite existing blobs in your blob storage
-          overwrite: 'true'
+          name: helm-canary-binaries
+          path: _dist/helm-*
+          retention-days: 90
