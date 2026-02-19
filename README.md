@@ -1,4 +1,6 @@
-# Helm
+# Wilhelm
+
+> **Wilhelm** is "Helm" in Prussian German. Looking for the actual Helm? Find it at [helm/helm](https://github.com/helm/helm).
 
 [![Build Status](https://github.com/helm/helm/workflows/release/badge.svg)](https://github.com/helm/helm/actions?workflow=release)
 [![Go Report Card](https://goreportcard.com/badge/helm.sh/helm/v4)](https://goreportcard.com/report/helm.sh/helm/v4)
