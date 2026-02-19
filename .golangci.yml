@@ -52,6 +52,16 @@ linters:
             - revive
           text: 'var-naming: avoid meaningless package names'
 
+        # ST1005 requires lowercase error strings, but German capitalizes nouns.
+        - linters:
+            - staticcheck
+          text: 'ST1005'
+
+        # Verifikation and Konfiguration are correct German words, not English misspellings.
+        - linters:
+            - misspell
+          text: 'Verifikation|Konfiguration'
+
     warn-unused: true
 
   settings:
